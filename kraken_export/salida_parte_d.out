@@ -1,0 +1,17 @@
+RES|N=8192|b=512|grid=1x1|T_comp=12.7250s|T_comm=0.1121s|T_total=12.8652s|GFLOPs=28.49
+RES|N=8192|b=512|grid=1x2|T_comp=3.9689s|T_comm=5.2657s|T_total=9.2845s|GFLOPs=39.47
+RES|N=8192|b=512|grid=2x2|T_comp=1.7745s|T_comm=2.3395s|T_total=4.2235s|GFLOPs=86.78
+RES|N=8192|b=512|grid=2x4|T_comp=0.5784s|T_comm=2.2640s|T_total=2.9682s|GFLOPs=123.48
+RES|N=8192|b=512|grid=4x4|T_comp=0.5504s|T_comm=2.5592s|T_total=3.4402s|GFLOPs=106.54
+/tmp/slurmd/job39624/slurm_script: line 28: EOF: command not found
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#39624) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------

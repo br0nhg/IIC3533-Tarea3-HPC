@@ -1,0 +1,18 @@
+RES|N=8192|b=512|grid=1x8|T_comp=0.7275s|T_comm=6.7290s|T_total=7.5452s|GFLOPs=48.57
+RES|N=8192|b=512|grid=2x4|T_comp=1.2273s|T_comm=2.2104s|T_total=3.6035s|GFLOPs=101.71
+RES|N=8192|b=512|grid=4x2|T_comp=1.2141s|T_comm=3.4560s|T_total=4.8211s|GFLOPs=76.02
+RES|N=8192|b=512|grid=8x1|T_comp=0.7965s|T_comm=7.1784s|T_total=8.0559s|GFLOPs=45.50
+RES|N=8192|b=2048|grid=2x4|T_comp=1.2844s|T_comm=3.6707s|T_total=7.2898s|GFLOPs=50.28
+RES|N=8192|b=512|grid=2x4|T_comp=1.0392s|T_comm=2.2867s|T_total=3.4793s|GFLOPs=105.34
+RES|N=8192|b=128|grid=2x4|T_comp=1.4156s|T_comm=3.0438s|T_total=4.4880s|GFLOPs=81.66
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#39627) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------

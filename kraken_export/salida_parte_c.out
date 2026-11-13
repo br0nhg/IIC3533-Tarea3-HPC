@@ -1,0 +1,26 @@
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 1977436 on node yodaxico exited on
+signal 9 (Killed).
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 1978354 on node yodaxico exited on
+signal 9 (Killed).
+--------------------------------------------------------------------------
+RES|N=8192|b=2048|grid=2x2|T_comp=2.8455s|T_comm=1.5115s|T_total=5.9798s|GFLOPs=61.29
+RES|N=8192|b=1024|grid=2x2|T_comp=2.4226s|T_comm=0.8184s|T_total=3.5529s|GFLOPs=103.16
+RES|N=8192|b=512|grid=2x2|T_comp=2.4230s|T_comm=1.0186s|T_total=3.5326s|GFLOPs=103.75
+RES|N=8192|b=256|grid=2x2|T_comp=2.6469s|T_comm=1.4850s|T_total=4.1588s|GFLOPs=88.13
+RES|N=8192|b=128|grid=2x2|T_comp=3.2987s|T_comm=2.3568s|T_total=5.6740s|GFLOPs=64.59
+RES|N=8192|b=64|grid=2x2|T_comp=6.5379s|T_comm=5.1950s|T_total=11.7482s|GFLOPs=31.20
+[2026-11-12T14:02:40.164] error: Detected 2 oom_kill events in StepId=39185.batch. Some of the step tasks have been OOM Killed.
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#39185) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------
