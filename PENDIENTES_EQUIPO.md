@@ -1,5 +1,7 @@
 # T3 — Pendientes para el equipo antes de cerrar el informe
 
+> **Actualización:** los bugs (sección 1), la verificación (sección 2), los scripts SLURM (secciones 3 y 4) y los datos de hardware (sección 5) ya están resueltos en el código y en `slurm/`. **Para correr, seguir [INSTRUCCIONES.md](INSTRUCCIONES.md).** Este archivo queda como registro de lo que estaba mal en la primera versión.
+
 Revisé el código, los scripts SLURM y las salidas de `kraken_export/`. Hay **dos bugs que invalidan los resultados distribuidos** y varias corridas que pide el enunciado y no están. El informe (`informe/informe.tex`) ya tiene toda la estructura y el análisis; donde faltan datos aparecen marcas rojas `[...]`.
 
 Entrega: **lunes 16 de noviembre, 23:59**. Prioridad: 1 → 2 → 3 → 4.
