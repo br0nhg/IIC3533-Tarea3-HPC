@@ -18,8 +18,11 @@ import sys
 
 os.makedirs("resultados", exist_ok=True)
 raw_path = "resultados/parte_b_local.out"
-env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+           VECLIB_MAXIMUM_THREADS="1")
 py = sys.executable
+# Solo sobresuscribir si el computador tiene menos de 4 cores.
+OVERSUB = ["--oversubscribe"] if (os.cpu_count() or 1) < 4 else []
 
 
 def run(cmd, raw):
@@ -44,12 +47,12 @@ with open(raw_path, "w") as raw:
 
     print("\n=== 2. Verificación distribuida (N=1024, b=128) ===")
     for pr, pc in [(1, 1), (1, 2), (2, 1), (2, 2)]:
-        r = run(["mpirun", "--oversubscribe", "-n", str(pr * pc), py, "lu_distributed.py",
+        r = run(["mpirun", *OVERSUB, "-n", str(pr * pc), py, "lu_distributed.py",
                  "--N", "1024", "--b", "128", "--pr", str(pr), "--pc", str(pc), "--verify"], raw)
         all_ok &= r.returncode == 0 and "|OK" in r.stdout
 
     print("\n=== 3. Prueba de tiempos 2x2 (N=2048, b=128) ===")
-    r = run(["mpirun", "--oversubscribe", "-n", "4", py, "lu_distributed.py",
+    r = run(["mpirun", *OVERSUB, "-n", "4", py, "lu_distributed.py",
              "--N", "2048", "--b", "128", "--pr", "2", "--pc", "2", "--reps", "3"], raw)
     all_ok &= r.returncode == 0
 

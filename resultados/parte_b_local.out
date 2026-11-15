@@ -1,0 +1,46 @@
+$ /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_serial.py --N 1024 --b 128 --check
+SERIAL|N=1024|b=128|T=1|rep=0|t=0.0163|gflops=44.02|pivots=0
+CHECK|N=1024|b=128|residuo=4.219e-16
+
+$ mpirun -n 1 /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_distributed.py --N 1024 --b 128 --pr 1 --pc 1 --verify
+RES|N=1024|b=128|grid=1x1|p=1|T=1|rep=0|t_total=0.0060|t_comp_max=0.0057|t_comm_max=0.0003|t_comp_mean=0.0057|t_comm_mean=0.0003|gflops=118.99|pivots=0
+PROC|N=1024|b=128|grid=1x1|T=1|rep=0|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0057|t_comm=0.0003|t_total=0.0060
+VERIFY|N=1024|b=128|grid=1x1|max_rel_diff_vs_serial=0.000e+00|residuo=4.219e-16|pivots=0|OK
+
+$ mpirun -n 2 /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_distributed.py --N 1024 --b 128 --pr 1 --pc 2 --verify
+RES|N=1024|b=128|grid=1x2|p=2|T=1|rep=0|t_total=0.0066|t_comp_max=0.0035|t_comm_max=0.0033|t_comp_mean=0.0034|t_comm_mean=0.0032|gflops=108.11|pivots=0
+PROC|N=1024|b=128|grid=1x2|T=1|rep=0|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0033|t_comm=0.0033|t_total=0.0066
+PROC|N=1024|b=128|grid=1x2|T=1|rep=0|rank=1|row=0|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0035|t_comm=0.0031|t_total=0.0066
+VERIFY|N=1024|b=128|grid=1x2|max_rel_diff_vs_serial=0.000e+00|residuo=4.219e-16|pivots=0|OK
+
+$ mpirun -n 2 /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_distributed.py --N 1024 --b 128 --pr 2 --pc 1 --verify
+RES|N=1024|b=128|grid=2x1|p=2|T=1|rep=0|t_total=0.0071|t_comp_max=0.0036|t_comm_max=0.0037|t_comp_mean=0.0035|t_comm_mean=0.0036|gflops=100.84|pivots=0
+PROC|N=1024|b=128|grid=2x1|T=1|rep=0|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0034|t_comm=0.0037|t_total=0.0071
+PROC|N=1024|b=128|grid=2x1|T=1|rep=0|rank=1|row=1|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0036|t_comm=0.0034|t_total=0.0071
+VERIFY|N=1024|b=128|grid=2x1|max_rel_diff_vs_serial=0.000e+00|residuo=4.219e-16|pivots=0|OK
+
+$ mpirun -n 4 /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_distributed.py --N 1024 --b 128 --pr 2 --pc 2 --verify
+RES|N=1024|b=128|grid=2x2|p=4|T=1|rep=0|t_total=0.0101|t_comp_max=0.0026|t_comm_max=0.0078|t_comp_mean=0.0024|t_comm_mean=0.0076|gflops=71.11|pivots=0
+PROC|N=1024|b=128|grid=2x2|T=1|rep=0|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0024|t_comm=0.0075|t_total=0.0099
+PROC|N=1024|b=128|grid=2x2|T=1|rep=0|rank=1|row=0|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0023|t_comm=0.0078|t_total=0.0101
+PROC|N=1024|b=128|grid=2x2|T=1|rep=0|rank=2|row=1|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0023|t_comm=0.0077|t_total=0.0101
+PROC|N=1024|b=128|grid=2x2|T=1|rep=0|rank=3|row=1|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0026|t_comm=0.0075|t_total=0.0101
+VERIFY|N=1024|b=128|grid=2x2|max_rel_diff_vs_serial=0.000e+00|residuo=4.219e-16|pivots=0|OK
+
+$ mpirun -n 4 /Users/brunodaniel/Universidad/2026-2/Computación de Alto Rendimiento/Tareas/T3/.venv/bin/python lu_distributed.py --N 2048 --b 128 --pr 2 --pc 2 --reps 3
+RES|N=2048|b=128|grid=2x2|p=4|T=1|rep=0|t_total=0.0279|t_comp_max=0.0199|t_comm_max=0.0106|t_comp_mean=0.0190|t_comm_mean=0.0088|gflops=205.49|pivots=0
+PROC|N=2048|b=128|grid=2x2|T=1|rep=0|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0171|t_comm=0.0106|t_total=0.0277
+PROC|N=2048|b=128|grid=2x2|T=1|rep=0|rank=1|row=0|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0191|t_comm=0.0088|t_total=0.0279
+PROC|N=2048|b=128|grid=2x2|T=1|rep=0|rank=2|row=1|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0198|t_comm=0.0081|t_total=0.0279
+PROC|N=2048|b=128|grid=2x2|T=1|rep=0|rank=3|row=1|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0199|t_comm=0.0080|t_total=0.0279
+RES|N=2048|b=128|grid=2x2|p=4|T=1|rep=1|t_total=0.0245|t_comp_max=0.0196|t_comm_max=0.0068|t_comp_mean=0.0186|t_comm_mean=0.0058|gflops=233.32|pivots=0
+PROC|N=2048|b=128|grid=2x2|T=1|rep=1|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0176|t_comm=0.0068|t_total=0.0244
+PROC|N=2048|b=128|grid=2x2|T=1|rep=1|rank=1|row=0|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0187|t_comm=0.0058|t_total=0.0245
+PROC|N=2048|b=128|grid=2x2|T=1|rep=1|rank=2|row=1|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0188|t_comm=0.0057|t_total=0.0245
+PROC|N=2048|b=128|grid=2x2|T=1|rep=1|rank=3|row=1|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0196|t_comm=0.0050|t_total=0.0245
+RES|N=2048|b=128|grid=2x2|p=4|T=1|rep=2|t_total=0.0248|t_comp_max=0.0197|t_comm_max=0.0069|t_comp_mean=0.0188|t_comm_mean=0.0060|gflops=230.48|pivots=0
+PROC|N=2048|b=128|grid=2x2|T=1|rep=2|rank=0|row=0|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0178|t_comm=0.0069|t_total=0.0247
+PROC|N=2048|b=128|grid=2x2|T=1|rep=2|rank=1|row=0|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0189|t_comm=0.0059|t_total=0.0248
+PROC|N=2048|b=128|grid=2x2|T=1|rep=2|rank=2|row=1|col=0|host=MacBook-Air-de-Bruno.local|t_comp=0.0189|t_comm=0.0059|t_total=0.0248
+PROC|N=2048|b=128|grid=2x2|T=1|rep=2|rank=3|row=1|col=1|host=MacBook-Air-de-Bruno.local|t_comp=0.0197|t_comm=0.0051|t_total=0.0248
+

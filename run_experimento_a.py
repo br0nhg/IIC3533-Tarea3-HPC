@@ -19,7 +19,8 @@ raw_path = "resultados/parte_a_local.out"
 csv_path = "resultados/parte_a_local.csv"
 
 # Un solo thread de BLAS, como pide el enunciado.
-env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+           VECLIB_MAXIMUM_THREADS="1")
 
 with open(raw_path, "w") as raw, open(csv_path, "w") as csv:
     csv.write("N,b,T,rep,tiempo_seg,gflops,pivots\n")

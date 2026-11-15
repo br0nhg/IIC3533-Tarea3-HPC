@@ -15,31 +15,11 @@ cd IIC3533-Tarea3-HPC
 
 (Si ya lo tienen: `git pull`.)
 
-## Paso 1: en el computador personal (unos 5–15 min)
+## Paso 1: computador personal — YA HECHO
 
-Desde la carpeta del repositorio, con el mismo ambiente de conda que usaron antes (numpy, scipy, mpi4py, Open MPI):
+Las partes (a) y (b) ya se corrieron en el Mac de Bruno (Apple M5) y sus resultados están en `resultados/parte_a_local.*` y `resultados/parte_b_local.out`. La verificación dio **OK en los 4 grids** (residuo 4.2e-16, idéntico a la versión serial, sin pivoteo), así que el código está validado. También se revisó la memoria con N=8192: el peor caso (1×1) usa ~1.7 GB, por debajo del límite de 4 GB por nodo.
 
-```bash
-python run_experimento_b.py
-```
-
-Esto verifica la correctitud (parte b). **Al final debe decir `TODO OK`** y cada línea `VERIFY` debe terminar en `OK`, con un residuo del orden de 1e-16.
-
-- Si dice `HAY PROBLEMAS`: **no correr en el cluster**. Subir `resultados/parte_b_local.out` y avisar.
-
-Si está todo OK, correr la parte (a) (tarda un rato, porque son 7 valores de b con 3 repeticiones):
-
-```bash
-python run_experimento_a.py
-```
-
-Luego subir los resultados:
-
-```bash
-git add resultados/
-git commit -m "Resultados locales partes a y b"
-git push
-```
+**No hay que correr nada en el computador. Solo el Paso 2.**
 
 ## Paso 2: en el cluster
 

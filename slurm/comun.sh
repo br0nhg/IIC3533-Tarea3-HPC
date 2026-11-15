@@ -14,7 +14,7 @@ corrida () {
     local conf=$1 pr=$2 pc=$3 T=$4 b=$5
     shift 5
     local p=$((pr * pc))
-    export OMP_NUM_THREADS=$T OPENBLAS_NUM_THREADS=$T MKL_NUM_THREADS=$T
+    export OMP_NUM_THREADS=$T OPENBLAS_NUM_THREADS=$T MKL_NUM_THREADS=$T VECLIB_MAXIMUM_THREADS=$T
     echo "### conf=$conf grid=${pr}x${pc} p=$p T=$T b=$b extra='$*' inicio=$(date +%T)"
     "$MPIRUN" -n "$p" --bind-to none "$@" \
         -x OMP_NUM_THREADS -x OPENBLAS_NUM_THREADS -x MKL_NUM_THREADS \
