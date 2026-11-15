@@ -18,10 +18,10 @@
 
 cd "$SLURM_SUBMIT_DIR"
 source slurm/comun.sh
-B_A=128
-B_C=${1:-512}
+BS=$(valores_b "$1")
+echo "### valores de b: $BS"
 
-for b in $B_A $B_C; do
+for b in $BS; do
     for T in 2 4; do
         corrida 0 1 1 $T $b
         corrida 1 1 2 $T $b

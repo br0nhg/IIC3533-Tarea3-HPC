@@ -33,3 +33,13 @@ info_nodo () {
     "$PYTHON" -c "import sys, numpy, scipy, mpi4py; print('python', sys.version.split()[0]); print('numpy', numpy.__version__, 'scipy', scipy.__version__, 'mpi4py', mpi4py.__version__); numpy.show_config()"
     echo "===== FIN INFO ====="
 }
+
+# Valores de b para las partes (d) y (e).
+# b_a = mejor b de la parte (a) (512, medido en el computador personal).
+# b_c = mejor b de la parte (c), se pasa como argumento al job (por defecto 512).
+# Si b_a == b_c, se agrega b = 128 como contraste para comparar dos tamaños de bloque.
+B_A=512
+valores_b () {
+    local b_c=${1:-512}
+    if [ "$b_c" = "$B_A" ]; then echo "$B_A 128"; else echo "$B_A $b_c"; fi
+}

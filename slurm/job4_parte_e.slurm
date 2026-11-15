@@ -16,11 +16,11 @@
 
 cd "$SLURM_SUBMIT_DIR"
 source slurm/comun.sh
-B_A=128
-B_C=${1:-512}
+BS=$(valores_b "$1")
+echo "### valores de b: $BS"
 info_nodo
 
-for b in $B_A $B_C; do
+for b in $BS; do
     corrida 4 2 4 1 $b --map-by ppr:4:node
     corrida 5 4 4 1 $b --map-by ppr:8:node
 done

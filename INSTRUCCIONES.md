@@ -87,11 +87,11 @@ git push
 | Job | Partes | Nodos | Corridas |
 |---|---|---|---|
 | `job1_parte_c_f` | c, f | 1 | Grid 2×2 (config 2), T=2, b = 4096 … 64 (y 8192 al final). Incluye b=N/2 y b=N/16 de la parte (f), con los tiempos de cada proceso. También guarda `lscpu` y las versiones. |
-| `job2_parte_d_T1` | d (y config 3 para e) | 1 | T=1: 1×1, 1×2, 2×1, 2×2, 2×4, 4×2, con b=128 y b_c. |
-| `job3_parte_d_Tvar` | d | 1 | 1×1 con T=2, 4, 8; 1×2 y 2×1 con T=2, 4; con b=128 y b_c. |
-| `job4_parte_e` | e | 2 | Config 4 (2×4, 4 por nodo) y config 5 (4×4, 8 por nodo), T=1, b=128 y b_c. También registra la red. |
+| `job2_parte_d_T1` | d (y config 3 para e) | 1 | T=1: 1×1, 1×2, 2×1, 2×2, 2×4, 4×2, con b_a=512 y b_c. |
+| `job3_parte_d_Tvar` | d | 1 | 1×1 con T=2, 4, 8; 1×2 y 2×1 con T=2, 4; con b_a=512 y b_c. |
+| `job4_parte_e` | e | 2 | Config 4 (2×4, 4 por nodo) y config 5 (4×4, 8 por nodo), T=1, b_a=512 y b_c. También registra la red. |
 
-Todas las corridas usan N = 8192 y 3 repeticiones.
+Todas las corridas usan N = 8192 y 3 repeticiones. b_a = 512 es el mejor b de la parte (a). Si b_c también sale 512, los jobs 2 a 4 corren además b = 128 como contraste (lo hacen solos, no hay que hacer nada).
 
 ## Formato de la salida
 
