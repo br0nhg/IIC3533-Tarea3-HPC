@@ -420,8 +420,7 @@ Con valores típicos ($\alpha,\delta\sim10^{-5}$ s, $\gamma\sim(25\ \text{GFLOP/
 
 % ======================================================================
 \section*{Declaración de uso de IA}
-Para este trabajo se usó Claude (Anthropic) mediante Claude Code como asistente para redactar la estructura del informe y el desarrollo del modelo de costo, y para revisar el código y los resultados entregados por el grupo, a partir de las mediciones realizadas por los integrantes en su computador y en el \emph{cluster}. Los resultados corresponden a mediciones reales y el análisis final fue revisado por los integrantes.
-\nota{Ajustar según cómo usaron IA para escribir y correr el código.}
+Se utilizó el agente Claude Code (Anthropic) como herramienta de asistencia técnica y editorial. El agente fue empleado para revisar nuestra primera implementación (por ejemplo, detectó que en la actualización se descartaban los paneles recibidos por \texttt{Bcast}, de modo que solo el dueño de $A_{kk}$ actualizaba sus bloques; que al panel $L$ le faltaba \texttt{trans='T'} en \texttt{solve\_triangular}, y que algunas configuraciones de un nodo se habían ejecutado repartidas en dos), para reestructurar el código (un \texttt{Bcast} por panel, tiempos por proceso y verificación de correctitud), para escribir los scripts SLURM y para colaborar en el formato \LaTeX{} y la redacción del informe a partir de los datos recolectados. Las mediciones de las partes (a) y (b) se ejecutaron con el agente en el computador de uno de los integrantes, y los experimentos en el \emph{cluster} fueron realizados íntegramente por los autores.
 
 \appendix
 \section{Scripts SLURM}
