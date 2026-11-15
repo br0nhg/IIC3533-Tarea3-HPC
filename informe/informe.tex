@@ -7,7 +7,7 @@
 \usepackage{graphicx,booktabs,multirow,float,amsmath,amssymb,listings,xcolor,hyperref}
 \usepackage{caption}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.17}
+\pgfplotsset{compat=1.17, /pgf/number format/use period}
 \captionsetup{font=small,labelfont=bf}
 \setlength{\emergencystretch}{2em}
 \graphicspath{{figs/}}
@@ -23,11 +23,12 @@
 \newcommand{\Ttot}{T_{\text{total}}}
 
 \title{Tarea 3: Factorización LU distribuida con MPI4PY\\
-\large IIC3533 Computación de Alto Rendimiento · 2026-2}
+\large IIC3533 Computación de Alto Rendimiento $\cdot$ 2026-2}
 \author{Integrante 1 \and Integrante 2 \and Integrante 3}
 \date{16 de noviembre de 2026}
 
 \begin{document}
+\decimalpoint
 \maketitle
 
 % ======================================================================
@@ -47,19 +48,19 @@ Como la matriz es diagonal dominante, la factorización se completa sin pivoteo,
 \toprule
  & \textbf{Computador personal} & \textbf{Cluster Kraken} \\
 \midrule
-CPU & Intel Pentium 4417U @ 2.30 GHz & \falta{modelo CPU (\texttt{lscpu})} \\
-Cores & 2 físicos / 4 lógicos (HT) & 40 CPUs por nodo; 2 nodos (\texttt{ventress}, \texttt{yodaxico}) \\
-Caché L1d / L2 / L3 & 32 KB/core / 256 KB/core / 2 MB & \falta{cachés} \\
-Memoria & 1.8 GB asignados a WSL2 & $\sim$192 GB por nodo \\
+CPU & Apple M5 (ARM64) & \falta{modelo CPU (\texttt{lscpu})} \\
+Cores & 10: 4 de rendimiento (P) + 6 de eficiencia (E), sin SMT & 40 CPUs por nodo; 2 nodos (\texttt{ventress}, \texttt{yodaxico}) \\
+Cachés & L1d 128 KB (P) / 64 KB (E); L2 16 MB (clúster P) + 6 MB (clúster E) & \falta{cachés} \\
+Memoria & 16 GB unificada & $\sim$192 GB por nodo \\
 Límites del grupo & -- & 8 CPUs y 4 GB por nodo, 15 min por \emph{job} \\
 Red entre nodos & -- & \falta{Ethernet / InfiniBand} \\
-Sistema operativo & Ubuntu 22.04 sobre WSL2 & \falta{SO del cluster} \\
-Python / MPI & \falta{versiones} & Miniconda (\texttt{hpc\_mpi}), \falta{Open MPI x.y, mpi4py x.y} \\
-BLAS & \falta{OpenBLAS / MKL} & \falta{OpenBLAS / MKL} \\
+Sistema operativo & macOS 26.6 & \falta{SO del cluster} \\
+Python / MPI & Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 & Miniconda (\texttt{hpc\_mpi}), \falta{Open MPI x.y, mpi4py x.y} \\
+BLAS & Apple Accelerate & \falta{OpenBLAS / MKL} \\
 \bottomrule
 \end{tabular}
 \end{table}
-\nota{Completar con \texttt{lscpu}, \texttt{mpirun -{}-version}, \texttt{python -c "import numpy; numpy.show\_config()"} y el tipo de red (\texttt{ibstat} o \texttt{ip link}). El tipo de red es importante para la parte (e). Notar que el computador personal tiene solo 2 cores físicos, por lo que la parte (b) con 4 procesos requirió \texttt{-{}-oversubscribe}: sirve para verificar correctitud, no para medir rendimiento.}
+\nota{Completar la columna del \emph{cluster} con la salida de \texttt{info\_nodo} (al inicio de \texttt{resultados/t3\_c\_f\_*.out} y \texttt{t3\_e\_*.out}): modelo de CPU, cachés, SO, versiones, BLAS y tipo de red (importante para la parte e).}
 
 \subsection{Implementación y medición}
 \begin{itemize}
@@ -72,7 +73,7 @@ BLAS & \falta{OpenBLAS / MKL} & \falta{OpenBLAS / MKL} \\
 
 % ======================================================================
 \section{(a) LU serial y tamaño de bloque}
-Se ejecutó \texttt{lu\_serial.py} con $N=2^{12}=4096$ en el computador personal, variando $b$ de $2^{12}$ a $2^6$.
+Se ejecutó \texttt{lu\_serial.py} con $N=2^{12}=4096$ en el computador personal con un \emph{thread} (\texttt{OMP\_NUM\_THREADS}, \texttt{OPENBLAS\_NUM\_THREADS}, \texttt{MKL\_NUM\_THREADS} y \texttt{VECLIB\_MAXIMUM\_THREADS} en 1), variando $b$ de $2^{12}$ a $2^6$, con 3 repeticiones por valor (\texttt{run\_experimento\_a.py}).
 
 \begin{figure}[H]\centering
 \begin{tikzpicture}
@@ -80,15 +81,16 @@ Se ejecutó \texttt{lu\_serial.py} con $N=2^{12}=4096$ en el computador personal
   width=0.75\linewidth, height=6cm,
   xmode=log, log basis x=2,
   xlabel={Tamaño de bloque $b$}, ylabel={Tiempo [s]},
-  title={LU serial, $N=4096$, computador personal},
+  title={LU serial, $N=4096$, 1 \emph{thread} (mediana de 3)},
   xtick={64,128,256,512,1024,2048,4096},
   xticklabels={64,128,256,512,1024,2048,4096},
-  ymin=0, ymax=29, grid=major, label style={font=\small}, tick label style={font=\small},
+  ymin=0, ymax=0.4, grid=major, label style={font=\small}, tick label style={font=\small},
+  yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
   nodes near coords, point meta=explicit symbolic,
   every node near coord/.append style={font=\scriptsize, anchor=south, yshift=2pt, fill=white, inner sep=1pt}]
 \addplot[mark=*, thick, blue!70!black] coordinates {
-  (4096,12.4527)[12.5] (2048,14.9874)[15.0] (1024,14.5798)[14.6]
-  (512,10.5596)[10.6] (256,9.9672)[10.0] (128,9.7043)[9.7] (64,25.3809)[25.4]};
+  (4096,0.2684)[0.268] (2048,0.2205)[0.221] (1024,0.1947)[0.195]
+  (512,0.1747)[0.175] (256,0.2082)[0.208] (128,0.2567)[0.257] (64,0.3316)[0.332]};
 \end{axis}
 \end{tikzpicture}
 \caption{Tiempo de \texttt{lu\_serial.py} con $N=4096$ según $b$. $b=4096$ corresponde a una sola llamada a \texttt{lu\_factor} (LAPACK).}
@@ -97,30 +99,32 @@ Se ejecutó \texttt{lu\_serial.py} con $N=2^{12}=4096$ en el computador personal
 
 \begin{table}[H]
 \centering\small
-\caption{LU serial con $N=4096$ en el computador personal.}
+\caption{LU serial con $N=4096$ y un \emph{thread}. Tiempo: mediana y rango de 3 repeticiones. La columna ``\% en \texttt{@}'' es la fracción de los FLOP que corresponde a la actualización (producto de matrices); el resto es \texttt{lu\_factor} y \texttt{solve\_triangular}.}
 \label{tab:a}
-\begin{tabular}{rrrr}
+\begin{tabular}{rrrrrr}
 \toprule
-$b$ & $N/b$ & Tiempo [s] & GFLOP/s \\
+$b$ & $N/b$ & \% en \texttt{@} & Tiempo [s] & Rango [s] & GFLOP/s \\
 \midrule
-4096 & 1  & 12.45 & 3.68 \\
-2048 & 2  & 14.99 & 3.06 \\
-1024 & 4  & 14.58 & 3.14 \\
-512  & 8  & 10.56 & 4.34 \\
-256  & 16 &  9.97 & 4.60 \\
-\textbf{128} & \textbf{32} & \textbf{9.70} & \textbf{4.72} \\
-64   & 64 & 25.38 & 1.81 \\
+4096 & 1  & 0    & 0.268 & 0.267--0.270 & 171 \\
+2048 & 2  & 37.5 & 0.221 & 0.220--0.228 & 208 \\
+1024 & 4  & 65.6 & 0.195 & 0.186--0.197 & 235 \\
+\textbf{512} & \textbf{8} & \textbf{82.0} & \textbf{0.175} & \textbf{0.174--0.186} & \textbf{262} \\
+256  & 16 & 90.8 & 0.208 & 0.192--0.231 & 220 \\
+128  & 32 & 95.4 & 0.257 & 0.255--0.264 & 178 \\
+64   & 64 & 97.7 & 0.332 & 0.331--0.348 & 138 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-El mejor tiempo se obtiene con $\boldsymbol{b=128}$ (9.70 s, 4.72 GFLOP/s), con $b=256$ y $b=512$ a menos de un 9\%. Se distinguen tres regímenes:
-\begin{itemize}
-  \item \textbf{$b$ grande (1024--2048):} con pocos bloques, gran parte del trabajo cae en \texttt{lu\_factor} y en los paneles. Con $N/b$ bloques, la factorización diagonal suma $\tfrac{2}{3}Nb^2$ FLOP y los paneles $\sim N^2b$, frente a $\tfrac{2}{3}N^3$ en total. Con $b=2048$, solo $\sim$40\% del trabajo es producto de matrices (la operación más eficiente de BLAS). Además, cada bloque ocupa 8--32 MB, muy por encima de la L3 de 2 MB. Incluso es más lento que llamar a LAPACK sobre la matriz completa ($b=4096$), que internamente ya usa bloques pequeños.
-  \item \textbf{$b$ intermedio (128--512):} casi todo el trabajo es producto de matrices de $b\times b$. Un bloque de $128\times128$ ocupa 128 KB y cabe en la L2 de 256 KB de un core, de modo que el \texttt{@} trabaja desde caché.
-  \item \textbf{$b$ pequeño (64):} el número de bloques crece como $(N/b)^2$ y el de productos como $(N/b)^3/3\approx 87\,000$ llamadas desde Python. El costo fijo de cada llamada (intérprete, creación de arreglos temporales, \emph{slicing}) y la baja eficiencia de BLAS en matrices pequeñas dominan, y el tiempo sube a 25.4 s.
-\end{itemize}
-\nota{\textbf{Esta sección se rehace con los datos nuevos} (\texttt{resultados/parte\_a\_local.csv}, 1 thread, 3 repeticiones). Los números de arriba son de la versión anterior de \texttt{lu\_serial.py}, que actualizaba bloque a bloque ($\sim(N/b)^3/3$ llamadas) y calculaba mal el panel $L$. La versión corregida procesa cada panel con una sola llamada a \texttt{solve\_triangular} y actualiza toda la submatriz restante con un solo \texttt{@} (una actualización de rango $b$), igual que la versión distribuida con $1\times1$. Con eso desaparece el costo de las 87\,000 llamadas, y el argumento para $b$ pequeño pasa a ser la baja intensidad aritmética de la actualización de rango $b$ ($\sim b/8$ FLOP por byte, limitada por memoria), además de que hay $N/b$ pasos con llamadas a LAPACK pequeñas. Para $b$ grande se mantiene el argumento de \texttt{lu\_factor} y los paneles.}
+El mejor tiempo se obtiene con $\boldsymbol{b=512}$ (0.175 s, 262 GFLOP/s); $b=1024$ queda a un 11\% y $b=256$ a un 19\%. La curva tiene forma de U, con un factor 1.9 entre el mejor ($b=512$) y el peor caso ($b=64$).
+
+\textbf{Rendimiento absoluto.} 262 GFLOP/s con un solo \emph{thread} es muy alto para un core. La razón es que Accelerate, la BLAS/LAPACK de Apple que usa NumPy en macOS, ejecuta los productos de matrices en la unidad de matrices del procesador. Se comprobó que efectivamente corre en un solo \emph{thread}: con $N=8192$, el tiempo de CPU (3.05 s) es prácticamente igual al tiempo real (3.26 s), mientras que sin limitar los \emph{threads} el tiempo de CPU supera al real (4.00 frente a 2.80 s). Por esto los valores absolutos no son comparables con los del \emph{cluster}, pero la forma de la curva sí se explica con los mismos argumentos.
+
+\textbf{$b$ grande ($\ge1024$).} Con pocos bloques, una parte importante del trabajo no es producto de matrices. En total, la factorización de los bloques diagonales suma $\tfrac{2}{3}Nb^2$ FLOP y los paneles $\sim N^2b$, frente a $\tfrac{2}{3}N^3$ del total, y la Tabla~\ref{tab:a} muestra que con $b=2048$ solo el 37.5\% de los FLOP están en el \texttt{@}. \texttt{lu\_factor} (\texttt{getrf}) y \texttt{solve\_triangular} (\texttt{trsm}) tienen dependencias internas y rinden menos que el producto de matrices: el caso extremo $b=4096$ es una sola llamada a LAPACK y alcanza 171 GFLOP/s, frente a 262 con $b=512$.
+
+\textbf{$b$ pequeño ($\le256$).} Casi todo el trabajo es la actualización, pero es un producto de rango $b$: en cada paso se lee y escribe toda la submatriz restante (hasta 128 MB, mucho más que los 16 MB de L2) para hacer solo $2b$ FLOP por elemento. La intensidad aritmética es $\sim b/8$ FLOP por byte y el tráfico total con memoria crece como $\tfrac{16N^3}{3b}$ bytes: $\approx5.7$ GB con $b=64$ frente a $\approx0.7$ GB con $b=512$. Además, la unidad de matrices es menos eficiente con una dimensión interna pequeña, y hay $N/b$ pasos con llamadas pequeñas a LAPACK y el costo fijo de Python.
+
+\textbf{Óptimo.} $b=512$ equilibra ambos efectos: el 82\% de los FLOP están en el producto de matrices y la actualización tiene una intensidad de $\sim64$ FLOP/byte. Por lo tanto, se elige $\boldsymbol{b_a=512}$. Una primera medición del grupo en otro computador (Intel Pentium 4417U, con una versión anterior del código que actualizaba bloque a bloque) daba el óptimo en $b=128$: el $b$ óptimo depende del hardware (cachés, ancho de banda, BLAS) y de la implementación, lo que motiva repetir el barrido en el \emph{cluster} (parte c).
 
 % ======================================================================
 \section{(b) Implementación distribuida}
@@ -170,38 +174,45 @@ También se cuenta en cuántos bloques diagonales \texttt{lu\_factor} permutó f
 
 \begin{table}[H]
 \centering\small
-\caption{Verificación de correctitud con $N=1024$, $b=128$ (computador personal, \texttt{-{}-oversubscribe}).}
+\caption{Verificación de correctitud con $N=1024$, $b=128$ en el computador personal.}
 \label{tab:verif}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Grid} & Dif. relativa máx. vs.\ serial & $\|A-LU\|_F/\|A\|_F$ & Bloques con pivoteo \\
 \midrule
-$1\times1$ & \falta{--} & \falta{--} & \falta{--} \\
-$1\times2$ & \falta{--} & \falta{--} & \falta{--} \\
-$2\times1$ & \falta{--} & \falta{--} & \falta{--} \\
-$2\times2$ & \falta{--} & \falta{--} & \falta{--} \\
+Serial & -- & $4.2\times10^{-16}$ & 0 \\
+$1\times1$ & 0 & $4.2\times10^{-16}$ & 0 \\
+$1\times2$ & 0 & $4.2\times10^{-16}$ & 0 \\
+$2\times1$ & 0 & $4.2\times10^{-16}$ & 0 \\
+$2\times2$ & 0 & $4.2\times10^{-16}$ & 0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+En los cuatro \emph{grids} la factorización distribuida es idéntica a la serial (diferencia exactamente 0): cada elemento se obtiene con la misma secuencia de operaciones, solo que repartida entre procesos. El residuo es $4.2\times10^{-16}$, del orden de la precisión de máquina ($\varepsilon\approx1.1\times10^{-16}$), y \texttt{lu\_factor} nunca permutó filas, lo que confirma que descartar el vector de pivoteo es válido para esta matriz.
+
 \subsection{Prueba local}
-Con $N=2048$, $b=128$ y \emph{grid} $2\times2$ en el computador personal (4 procesos sobre 2 cores físicos, con \texttt{-{}-oversubscribe}), se obtuvieron los tiempos de cada proceso de la Tabla~\ref{tab:blocal}. Por la sobresuscripción, estos tiempos no son representativos del rendimiento; solo confirman que el programa corre y mide por separado cómputo y comunicación en cada proceso.
+Con $N=2048$, $b=128$ y \emph{grid} $2\times2$ en el computador personal (4 procesos en 10 cores, sin sobresuscripción) se obtuvieron los tiempos de cada proceso de la Tabla~\ref{tab:blocal}.
 
 \begin{table}[H]
 \centering\small
-\caption{Tiempos por proceso con $N=2048$, $b=128$, \emph{grid} $2\times2$ en el computador personal (mediana de 3).}
+\caption{Tiempos por proceso con $N=2048$, $b=128$, \emph{grid} $2\times2$ y $T=1$ en el computador personal (mediana de 3).}
 \label{tab:blocal}
 \begin{tabular}{ccrrr}
 \toprule
-Rank & Posición & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] \\
+Rank & Posición & $\Tcomp$ [ms] & $\Tcomm$ [ms] & $\Ttot$ [ms] \\
 \midrule
-0 & $(0,0)$ & \falta{} & \falta{} & \falta{} \\
-1 & $(0,1)$ & \falta{} & \falta{} & \falta{} \\
-2 & $(1,0)$ & \falta{} & \falta{} & \falta{} \\
-3 & $(1,1)$ & \falta{} & \falta{} & \falta{} \\
+0 & $(0,0)$ & 17.6 & 6.9 & 24.7 \\
+1 & $(0,1)$ & 18.9 & 5.9 & 24.8 \\
+2 & $(1,0)$ & 18.9 & 5.9 & 24.8 \\
+3 & $(1,1)$ & 19.7 & 5.1 & 24.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+El cómputo está bien balanceado (17.6 a 19.7 ms, un 11\% de diferencia) y la comunicación representa entre el 21\% y el 28\% del tiempo. La suma $\Tcomp+\Tcomm$ es casi igual en los cuatro procesos: el que calcula menos espera más, porque esa espera queda dentro de los \texttt{Bcast}. El rank 0 es el que menos calcula: tiene las filas y columnas de bloque pares ($0,2,\dots,14$), así que en cada paso le quedan igual o menos bloques en la submatriz restante que a los demás, y es el que más espera. El rank 3 tiene las impares ($1,3,\dots,15$) y es el caso opuesto.
+
+Esta prueba sirve para validar la medición, no para estudiar el escalamiento: el problema es pequeño (5.7 GFLOP en total) y los 4 procesos juntos alcanzan unos 230 GFLOP/s, similar a un solo \emph{thread} en la parte (a). Una explicación probable es que en los chips de Apple la unidad de matrices es compartida por los cores de un mismo clúster, de modo que varios procesos compiten por ella. Por eso el escalamiento se estudia en el \emph{cluster}.
 
 % ======================================================================
 \section{(c) Tamaño de bloque en el \emph{cluster}}
@@ -249,14 +260,14 @@ $b$ & $N/b$ & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] & GFLOP/s \\
 
 \nota{\textbf{Estos datos no son válidos todavía}: el código distribuido no aplica la actualización en los procesos que no son dueños de $A_{kk}$, así que hace mucho menos trabajo que el real y la matriz resultante es incorrecta. Con el código corregido hay que repetir todo el barrido. Lo que sigue es la estructura del análisis con la tendencia actual, a confirmar.}
 
-Con los datos provisorios, el mínimo está en $b=512$ (3.53 s), prácticamente empatado con $b=1024$ (3.55 s), y \falta{confirmar} el valor $b=128$ elegido en (a) es 1.6$\times$ más lento. Las razones de que el óptimo se desplace hacia bloques más grandes son:
+Con los datos provisorios, el mínimo está en $b=512$ (3.53 s), prácticamente empatado con $b=1024$ (3.55 s), que coincide con $b_a=512$ de la parte (a). \falta{confirmar con los datos nuevos.} Las razones de que el óptimo se desplace hacia bloques más grandes son:
 \begin{itemize}
   \item \textbf{Comunicación:} en la versión distribuida aparece un costo por mensaje (latencia $\alpha$) que no existe en la serial. El número de \texttt{Bcast} crece como $(N/b)^2$, y con $b=64$ la comunicación ya es casi igual al cómputo (5.20 frente a 6.54 s).
   \item \textbf{Eficiencia de la actualización:} con $b$ pequeño la actualización de rango $b$ tiene baja intensidad aritmética y queda limitada por memoria, igual que en (a); además hay $N/b$ pasos, cada uno con varias llamadas desde Python.
   \item \textbf{Hardware:} el \emph{cluster} tiene núcleos con cachés más grandes y, con $T=2$, BLAS reparte cada producto entre 2 threads, lo que favorece bloques más grandes. \falta{completar con cachés del cluster}.
   \item \textbf{Bloques grandes:} con $b\ge2048$ hay $N/b\le4$ bloques por dimensión y solo uno o dos bloques por proceso; la mayoría de los procesos queda inactiva en cada paso (ver parte f), y con $b=N$ todo el trabajo y toda la memoria recaen en un solo proceso, que excede los 4 GB del nodo.
 \end{itemize}
-Por lo tanto, para las partes siguientes se usan $b_a=128$ (parte a) y $b_c=\falta{512}$ (parte c).
+Por lo tanto, para las partes siguientes se usan $b_a=512$ (parte a) y $b_c=\falta{512}$ (parte c). Si ambos coinciden, se agrega $b=128$ como contraste, para poder comparar dos tamaños de bloque en las partes (d) y (e).
 
 % ======================================================================
 \section{(d) Escalabilidad en un nodo: configuraciones 0 a 3}
@@ -269,7 +280,7 @@ Por lo tanto, para las partes siguientes se usan $b_a=128$ (parte a) y $b_c=\fal
 \label{tab:d}
 \begin{tabular}{cccc|rrr|rrr}
 \toprule
- & & & & \multicolumn{3}{c|}{$b=b_a=128$} & \multicolumn{3}{c}{$b=b_c=512$} \\
+ & & & & \multicolumn{3}{c|}{$b=b_a=512$} & \multicolumn{3}{c}{$b=\falta{128 o $b_c$}$} \\
 Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 \midrule
 0 & $1\times1$ & 1 & 1 & \falta{} & 1.00 & 1.00 & \falta{} & 1.00 & 1.00 \\
