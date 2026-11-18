@@ -1,0 +1,316 @@
+### valores de b: 512 128
+===== INFO ventress Wed Nov 18 12:22:00 PM -03 2026 =====
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  40
+On-line CPU(s) list:                     0-39
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) CPU E5-2640 v4 @ 2.40GHz
+CPU family:                              6
+Model:                                   79
+Thread(s) per core:                      2
+Core(s) per socket:                      10
+Socket(s):                               2
+Stepping:                                1
+CPU(s) scaling MHz:                      47%
+CPU max MHz:                             3400.0000
+CPU min MHz:                             1200.0000
+BogoMIPS:                                4788.84
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 pti intel_ppin ssbd ibrs ibpb stibp tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm rdt_a rdseed adx smap intel_pt xsaveopt cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts vnmi md_clear flush_l1d ibpb_exit_to_user
+Virtualization:                          VT-x
+L1d cache:                               640 KiB (20 instances)
+L1i cache:                               640 KiB (20 instances)
+L2 cache:                                5 MiB (20 instances)
+L3 cache:                                50 MiB (2 instances)
+NUMA node(s):                            2
+NUMA node0 CPU(s):                       0-9,20-29
+NUMA node1 CPU(s):                       10-19,30-39
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             KVM: Mitigation: VMX disabled
+Vulnerability L1tf:                      Mitigation; PTE Inversion; VMX conditional cache flushes, SMT vulnerable
+Vulnerability Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Meltdown:                  Mitigation; PTI
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP conditional; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+--- memoria
+               total        used        free      shared  buff/cache   available
+Mem:             251           4         183           0          65         246
+Swap:              0           0           0
+--- red
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp13s0f0        UP             a0:42:3f:3c:c6:a2 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp13s0f1        DOWN           a0:42:3f:3c:c6:a3 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+--- versiones
+mpirun (Open MPI) 5.0.11
+
+/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/python3.12/site-packages/numpy/__config__.py:155: UserWarning: Install `pyyaml` for better output
+  warnings.warn("Install `pyyaml` for better output", stacklevel=1)
+python 3.12.16
+numpy 2.5.4 scipy 1.18.1 mpi4py 4.1.2
+{
+  "Compilers": {
+    "c": {
+      "name": "gcc",
+      "linker": "ld.bfd",
+      "version": "15.3.0",
+      "commands": "x86_64-conda-linux-gnu-cc",
+      "args": "-march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "linker args": "-Wl,-O2, -Wl,--sort-common, -Wl,--as-needed, -Wl,-z,relro, -Wl,-z,now, -Wl,--disable-new-dtags, -Wl,--gc-sections, -Wl,--allow-shlib-undefined, -Wl,-rpath,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -Wl,-rpath-link,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -L/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include"
+    },
+    "cython": {
+      "name": "cython",
+      "linker": "cython",
+      "version": "3.3.0",
+      "commands": "cython"
+    },
+    "c++": {
+      "name": "gcc",
+      "linker": "ld.bfd",
+      "version": "15.3.0",
+      "commands": "x86_64-conda-linux-gnu-c++",
+      "args": "-fvisibility-inlines-hidden, -fmessage-length=0, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "linker args": "-Wl,-O2, -Wl,--sort-common, -Wl,--as-needed, -Wl,-z,relro, -Wl,-z,now, -Wl,--disable-new-dtags, -Wl,--gc-sections, -Wl,--allow-shlib-undefined, -Wl,-rpath,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -Wl,-rpath-link,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -L/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -fvisibility-inlines-hidden, -fmessage-length=0, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include"
+    }
+  },
+  "Machine Information": {
+    "host": {
+      "cpu": "x86_64",
+      "family": "x86_64",
+      "endian": "little",
+      "system": "linux"
+    },
+    "build": {
+      "cpu": "x86_64",
+      "family": "x86_64",
+      "endian": "little",
+      "system": "linux"
+    }
+  },
+  "Build Dependencies": {
+    "blas": {
+      "name": "blas",
+      "found": true,
+      "version": "3.9.0",
+      "detection method": "pkgconfig",
+      "include directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "lib directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib",
+      "openblas configuration": "unknown",
+      "pc file directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/pkgconfig"
+    },
+    "lapack": {
+      "name": "lapack",
+      "found": true,
+      "version": "3.9.0",
+      "detection method": "pkgconfig",
+      "include directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "lib directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib",
+      "openblas configuration": "unknown",
+      "pc file directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/pkgconfig"
+    }
+  },
+  "Python Information": {
+    "path": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/bin/python",
+    "version": "3.12"
+  },
+  "SIMD Extensions": {
+    "baseline": [
+      "X86_V2"
+    ],
+    "found": [
+      "X86_V3"
+    ],
+    "not found": [
+      "X86_V4",
+      "AVX512_ICL",
+      "AVX512_SPR"
+    ]
+  }
+}
+===== FIN INFO =====
+### conf=4 grid=2x4 p=8 T=1 b=512 extra='--map-by ppr:4:node' inicio=12:22:00
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=0|t_total=4.9632|t_comp_max=2.2831|t_comm_max=3.5667|t_comp_mean=1.7550|t_comm_mean=3.1537|gflops=73.84|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=1.2819|t_comm=3.5667|t_total=4.8500
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=1.4205|t_comm=3.4281|t_total=4.8488
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=1.5566|t_comm=3.2983|t_total=4.8551
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=1.6046|t_comm=3.3583|t_total=4.9631
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=4|row=1|col=0|host=yodaxico|t_comp=1.7751|t_comm=3.1609|t_total=4.9362
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=5|row=1|col=1|host=yodaxico|t_comp=1.9788|t_comm=2.9577|t_total=4.9376
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=6|row=1|col=2|host=yodaxico|t_comp=2.1395|t_comm=2.7970|t_total=4.9367
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=7|row=1|col=3|host=yodaxico|t_comp=2.2831|t_comm=2.6627|t_total=4.9460
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=1|t_total=4.5147|t_comp_max=2.2796|t_comm_max=3.1613|t_comp_mean=1.7444|t_comm_mean=2.7335|gflops=81.18|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=1.2787|t_comm=3.1613|t_total=4.4413
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=1.4081|t_comm=3.0319|t_total=4.4402
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=1.5400|t_comm=2.9001|t_total=4.4403
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=1.5886|t_comm=2.9259|t_total=4.5146
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=4|row=1|col=0|host=yodaxico|t_comp=1.7618|t_comm=2.7350|t_total=4.4970
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=5|row=1|col=1|host=yodaxico|t_comp=1.9691|t_comm=2.5282|t_total=4.4983
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=6|row=1|col=2|host=yodaxico|t_comp=2.1291|t_comm=2.3681|t_total=4.4975
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=7|row=1|col=3|host=yodaxico|t_comp=2.2796|t_comm=2.2176|t_total=4.4974
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=2|t_total=4.4927|t_comp_max=2.2670|t_comm_max=3.1493|t_comp_mean=1.7346|t_comm_mean=2.7213|gflops=81.58|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=1.2686|t_comm=3.1493|t_total=4.4193
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=1.3909|t_comm=3.0270|t_total=4.4180
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=1.5377|t_comm=2.8803|t_total=4.4181
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=1.5918|t_comm=2.9006|t_total=4.4926
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=4|row=1|col=0|host=yodaxico|t_comp=1.7471|t_comm=2.7278|t_total=4.4751
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=5|row=1|col=1|host=yodaxico|t_comp=1.9632|t_comm=2.5123|t_total=4.4765
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=6|row=1|col=2|host=yodaxico|t_comp=2.1110|t_comm=2.3645|t_total=4.4756
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=7|row=1|col=3|host=yodaxico|t_comp=2.2670|t_comm=2.2083|t_total=4.4755
+### fin=12:22:18 codigo=0
+### conf=5 grid=4x4 p=16 T=1 b=512 extra='--map-by ppr:8:node' inicio=12:22:18
+RES|N=8192|b=512|grid=4x4|p=16|T=1|rep=0|t_total=8.8197|t_comp_max=2.0467|t_comm_max=7.3914|t_comp_mean=1.6028|t_comm_mean=7.1226|gflops=41.55|pivots=0
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=1.1770|t_comm=7.1240|t_total=8.3013
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=1.2801|t_comm=7.3887|t_total=8.6691
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=1.3558|t_comm=7.3914|t_total=8.7475
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=1.4834|t_comm=7.3352|t_total=8.8189
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=4|row=1|col=0|host=ventress|t_comp=1.2607|t_comm=7.3728|t_total=8.6338
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=5|row=1|col=1|host=ventress|t_comp=1.4364|t_comm=7.2324|t_total=8.6691
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=6|row=1|col=2|host=ventress|t_comp=1.5174|t_comm=7.2298|t_total=8.7475
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=7|row=1|col=3|host=ventress|t_comp=1.6042|t_comm=7.2143|t_total=8.8189
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=8|row=2|col=0|host=yodaxico|t_comp=1.5742|t_comm=7.1460|t_total=8.7206
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=9|row=2|col=1|host=yodaxico|t_comp=1.8146|t_comm=6.9058|t_total=8.7206
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=10|row=2|col=2|host=yodaxico|t_comp=1.7638|t_comm=6.9823|t_total=8.7476
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=11|row=2|col=3|host=yodaxico|t_comp=1.9859|t_comm=6.8319|t_total=8.8180
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=12|row=3|col=0|host=yodaxico|t_comp=1.6306|t_comm=7.1628|t_total=8.7937
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=13|row=3|col=1|host=yodaxico|t_comp=1.8553|t_comm=6.9386|t_total=8.7942
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=14|row=3|col=2|host=yodaxico|t_comp=1.8588|t_comm=6.9351|t_total=8.7942
+PROC|N=8192|b=512|grid=4x4|T=1|rep=0|rank=15|row=3|col=3|host=yodaxico|t_comp=2.0467|t_comm=6.7710|t_total=8.8194
+RES|N=8192|b=512|grid=4x4|p=16|T=1|rep=1|t_total=4.9535|t_comp_max=2.2431|t_comm_max=3.5914|t_comp_mean=1.6572|t_comm_mean=3.2195|gflops=73.99|pivots=0
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=1.1601|t_comm=3.5425|t_total=4.7028
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=1.2133|t_comm=3.5914|t_total=4.8050
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=1.3183|t_comm=3.5638|t_total=4.8824
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=1.4179|t_comm=3.5347|t_total=4.9529
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=4|row=1|col=0|host=ventress|t_comp=1.2170|t_comm=3.5513|t_total=4.7685
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=5|row=1|col=1|host=ventress|t_comp=1.4263|t_comm=3.3784|t_total=4.8068
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=6|row=1|col=2|host=ventress|t_comp=1.4664|t_comm=3.4157|t_total=4.8824
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=7|row=1|col=3|host=ventress|t_comp=1.6140|t_comm=3.3386|t_total=4.9529
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=8|row=2|col=0|host=yodaxico|t_comp=1.7076|t_comm=3.1471|t_total=4.8550
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=9|row=2|col=1|host=yodaxico|t_comp=1.9352|t_comm=2.9194|t_total=4.8550
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=10|row=2|col=2|host=yodaxico|t_comp=1.8889|t_comm=2.9922|t_total=4.8827
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=11|row=2|col=3|host=yodaxico|t_comp=2.1122|t_comm=2.8395|t_total=4.9520
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=12|row=3|col=0|host=yodaxico|t_comp=1.7598|t_comm=3.1677|t_total=4.9278
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=13|row=3|col=1|host=yodaxico|t_comp=2.0394|t_comm=2.8885|t_total=4.9282
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=14|row=3|col=2|host=yodaxico|t_comp=1.9954|t_comm=2.9325|t_total=4.9282
+PROC|N=8192|b=512|grid=4x4|T=1|rep=1|rank=15|row=3|col=3|host=yodaxico|t_comp=2.2431|t_comm=2.7087|t_total=4.9532
+RES|N=8192|b=512|grid=4x4|p=16|T=1|rep=2|t_total=4.9497|t_comp_max=2.2432|t_comm_max=3.5805|t_comp_mean=1.6526|t_comm_mean=3.2201|gflops=74.05|pivots=0
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=1.1384|t_comm=3.5590|t_total=4.6976
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=1.2207|t_comm=3.5805|t_total=4.8015
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=1.3126|t_comm=3.5656|t_total=4.8784
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=1.4139|t_comm=3.5347|t_total=4.9488
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=4|row=1|col=0|host=ventress|t_comp=1.2240|t_comm=3.5403|t_total=4.7646
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=5|row=1|col=1|host=ventress|t_comp=1.3952|t_comm=3.4061|t_total=4.8034
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=6|row=1|col=2|host=ventress|t_comp=1.4764|t_comm=3.4017|t_total=4.8784
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=7|row=1|col=3|host=ventress|t_comp=1.5903|t_comm=3.3583|t_total=4.9488
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=8|row=2|col=0|host=yodaxico|t_comp=1.6975|t_comm=3.1535|t_total=4.8513
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=9|row=2|col=1|host=yodaxico|t_comp=1.9359|t_comm=2.9151|t_total=4.8513
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=10|row=2|col=2|host=yodaxico|t_comp=1.8893|t_comm=2.9879|t_total=4.8787
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=11|row=2|col=3|host=yodaxico|t_comp=2.1165|t_comm=2.8315|t_total=4.9482
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=12|row=3|col=0|host=yodaxico|t_comp=1.7511|t_comm=3.1723|t_total=4.9236
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=13|row=3|col=1|host=yodaxico|t_comp=2.0438|t_comm=2.8801|t_total=4.9242
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=14|row=3|col=2|host=yodaxico|t_comp=1.9934|t_comm=2.9305|t_total=4.9242
+PROC|N=8192|b=512|grid=4x4|T=1|rep=2|rank=15|row=3|col=3|host=yodaxico|t_comp=2.2432|t_comm=2.7047|t_total=4.9495
+### fin=12:22:40 codigo=0
+### conf=4 grid=2x4 p=8 T=1 b=128 extra='--map-by ppr:4:node' inicio=12:22:40
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=0|t_total=5.3444|t_comp_max=2.5874|t_comm_max=3.2243|t_comp_mean=2.3491|t_comm_mean=2.9923|gflops=68.58|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.1148|t_comm=3.2243|t_total=5.3396
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.1472|t_comm=3.1918|t_total=5.3396
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=2.2002|t_comm=3.1392|t_total=5.3399
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=2.2637|t_comm=3.0802|t_total=5.3444
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=4|row=1|col=0|host=yodaxico|t_comp=2.4323|t_comm=2.9101|t_total=5.3430
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=5|row=1|col=1|host=yodaxico|t_comp=2.5005|t_comm=2.8419|t_total=5.3430
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=6|row=1|col=2|host=yodaxico|t_comp=2.5468|t_comm=2.7957|t_total=5.3430
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=7|row=1|col=3|host=yodaxico|t_comp=2.5874|t_comm=2.7553|t_total=5.3432
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=1|t_total=5.2165|t_comp_max=2.5542|t_comm_max=3.1117|t_comp_mean=2.3286|t_comm_mean=2.8849|gflops=70.26|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.0995|t_comm=3.1117|t_total=5.2117
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.1293|t_comm=3.0819|t_total=5.2117
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=2.2031|t_comm=3.0085|t_total=5.2120
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=2.2422|t_comm=2.9738|t_total=5.2165
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=4|row=1|col=0|host=yodaxico|t_comp=2.4250|t_comm=2.7894|t_total=5.2151
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=5|row=1|col=1|host=yodaxico|t_comp=2.4662|t_comm=2.7483|t_total=5.2151
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=6|row=1|col=2|host=yodaxico|t_comp=2.5095|t_comm=2.7050|t_total=5.2151
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=7|row=1|col=3|host=yodaxico|t_comp=2.5542|t_comm=2.6606|t_total=5.2153
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=2|t_total=5.1825|t_comp_max=2.5667|t_comm_max=3.0611|t_comp_mean=2.3382|t_comm_mean=2.8414|gflops=70.72|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.1161|t_comm=3.0611|t_total=5.1777
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.1387|t_comm=3.0385|t_total=5.1777
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=2.2273|t_comm=2.9503|t_total=5.1781
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=2.2517|t_comm=2.9303|t_total=5.1825
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=4|row=1|col=0|host=yodaxico|t_comp=2.4114|t_comm=2.7692|t_total=5.1811
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=5|row=1|col=1|host=yodaxico|t_comp=2.4744|t_comm=2.7062|t_total=5.1811
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=6|row=1|col=2|host=yodaxico|t_comp=2.5191|t_comm=2.6616|t_total=5.1811
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=7|row=1|col=3|host=yodaxico|t_comp=2.5667|t_comm=2.6141|t_total=5.1814
+### fin=12:23:00 codigo=0
+### conf=5 grid=4x4 p=16 T=1 b=128 extra='--map-by ppr:8:node' inicio=12:23:00
+RES|N=8192|b=128|grid=4x4|p=16|T=1|rep=0|t_total=4.9629|t_comp_max=2.4774|t_comm_max=3.0241|t_comp_mean=2.1940|t_comm_mean=2.7638|gflops=73.85|pivots=0
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=1.9238|t_comm=3.0241|t_total=4.9487
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=1.9412|t_comm=3.0126|t_total=4.9545
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=1.9661|t_comm=2.9931|t_total=4.9599
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=1.9992|t_comm=2.9629|t_total=4.9628
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=4|row=1|col=0|host=ventress|t_comp=1.9604|t_comm=2.9914|t_total=4.9525
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=5|row=1|col=1|host=ventress|t_comp=2.0259|t_comm=2.9278|t_total=4.9545
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=6|row=1|col=2|host=ventress|t_comp=2.0523|t_comm=2.9069|t_total=4.9598
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=7|row=1|col=3|host=ventress|t_comp=2.0807|t_comm=2.8814|t_total=4.9628
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=8|row=2|col=0|host=yodaxico|t_comp=2.3029|t_comm=2.6539|t_total=4.9576
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=9|row=2|col=1|host=yodaxico|t_comp=2.3543|t_comm=2.6025|t_total=4.9576
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=10|row=2|col=2|host=yodaxico|t_comp=2.4104|t_comm=2.5475|t_total=4.9586
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=11|row=2|col=3|host=yodaxico|t_comp=2.4450|t_comm=2.5164|t_total=4.9621
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=12|row=3|col=0|host=yodaxico|t_comp=2.3801|t_comm=2.5802|t_total=4.9610
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=13|row=3|col=1|host=yodaxico|t_comp=2.3826|t_comm=2.5777|t_total=4.9610
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=14|row=3|col=2|host=yodaxico|t_comp=2.4018|t_comm=2.5585|t_total=4.9610
+PROC|N=8192|b=128|grid=4x4|T=1|rep=0|rank=15|row=3|col=3|host=yodaxico|t_comp=2.4774|t_comm=2.4839|t_total=4.9621
+RES|N=8192|b=128|grid=4x4|p=16|T=1|rep=1|t_total=4.9491|t_comp_max=2.4821|t_comm_max=2.9927|t_comp_mean=2.1934|t_comm_mean=2.7507|gflops=74.05|pivots=0
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=1.9475|t_comm=2.9873|t_total=4.9355
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=1.9629|t_comm=2.9770|t_total=4.9407
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=1.9812|t_comm=2.9641|t_total=4.9460
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=2.0215|t_comm=2.9268|t_total=4.9490
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=4|row=1|col=0|host=ventress|t_comp=1.9454|t_comm=2.9927|t_total=4.9388
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=5|row=1|col=1|host=ventress|t_comp=2.0160|t_comm=2.9240|t_total=4.9407
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=6|row=1|col=2|host=ventress|t_comp=2.0247|t_comm=2.9206|t_total=4.9460
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=7|row=1|col=3|host=ventress|t_comp=2.0591|t_comm=2.8893|t_total=4.9490
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=8|row=2|col=0|host=yodaxico|t_comp=2.3059|t_comm=2.6371|t_total=4.9439
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=9|row=2|col=1|host=yodaxico|t_comp=2.3755|t_comm=2.5677|t_total=4.9439
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=10|row=2|col=2|host=yodaxico|t_comp=2.4002|t_comm=2.5439|t_total=4.9449
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=11|row=2|col=3|host=yodaxico|t_comp=2.3968|t_comm=2.5507|t_total=4.9482
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=12|row=3|col=0|host=yodaxico|t_comp=2.3754|t_comm=2.5711|t_total=4.9472
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=13|row=3|col=1|host=yodaxico|t_comp=2.4016|t_comm=2.5449|t_total=4.9472
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=14|row=3|col=2|host=yodaxico|t_comp=2.3979|t_comm=2.5486|t_total=4.9472
+PROC|N=8192|b=128|grid=4x4|T=1|rep=1|rank=15|row=3|col=3|host=yodaxico|t_comp=2.4821|t_comm=2.4655|t_total=4.9482
+RES|N=8192|b=128|grid=4x4|p=16|T=1|rep=2|t_total=4.9471|t_comp_max=2.4791|t_comm_max=3.0211|t_comp_mean=2.1903|t_comm_mean=2.7517|gflops=74.08|pivots=0
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=1.9111|t_comm=3.0211|t_total=4.9329
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=1.9378|t_comm=2.9999|t_total=4.9384
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=1.9447|t_comm=2.9987|t_total=4.9441
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=1.9916|t_comm=2.9549|t_total=4.9471
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=4|row=1|col=0|host=ventress|t_comp=1.9796|t_comm=2.9564|t_total=4.9366
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=5|row=1|col=1|host=ventress|t_comp=1.9960|t_comm=2.9417|t_total=4.9384
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=6|row=1|col=2|host=ventress|t_comp=2.0259|t_comm=2.9175|t_total=4.9441
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=7|row=1|col=3|host=ventress|t_comp=2.0681|t_comm=2.8781|t_total=4.9471
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=8|row=2|col=0|host=yodaxico|t_comp=2.2960|t_comm=2.6450|t_total=4.9418
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=9|row=2|col=1|host=yodaxico|t_comp=2.4037|t_comm=2.5374|t_total=4.9418
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=10|row=2|col=2|host=yodaxico|t_comp=2.4021|t_comm=2.5400|t_total=4.9429
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=11|row=2|col=3|host=yodaxico|t_comp=2.4184|t_comm=2.5272|t_total=4.9463
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=12|row=3|col=0|host=yodaxico|t_comp=2.3797|t_comm=2.5648|t_total=4.9452
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=13|row=3|col=1|host=yodaxico|t_comp=2.4035|t_comm=2.5411|t_total=4.9452
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=14|row=3|col=2|host=yodaxico|t_comp=2.4079|t_comm=2.5366|t_total=4.9452
+PROC|N=8192|b=128|grid=4x4|T=1|rep=2|rank=15|row=3|col=3|host=yodaxico|t_comp=2.4791|t_comm=2.4665|t_total=4.9463
+### fin=12:23:18 codigo=0
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#40608) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------

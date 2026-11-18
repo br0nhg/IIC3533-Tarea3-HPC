@@ -1,0 +1,222 @@
+### valores de b: 512 128
+### conf=0 grid=1x1 p=1 T=1 b=512 extra='' inicio=12:12:03
+RES|N=8192|b=512|grid=1x1|p=1|T=1|rep=0|t_total=10.9152|t_comp_max=10.8062|t_comm_max=0.1089|t_comp_mean=10.8062|t_comm_mean=0.1089|gflops=33.58|pivots=0
+PROC|N=8192|b=512|grid=1x1|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=10.8062|t_comm=0.1089|t_total=10.9152
+RES|N=8192|b=512|grid=1x1|p=1|T=1|rep=1|t_total=10.9078|t_comp_max=10.8020|t_comm_max=0.1056|t_comp_mean=10.8020|t_comm_mean=0.1056|gflops=33.60|pivots=0
+PROC|N=8192|b=512|grid=1x1|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=10.8020|t_comm=0.1056|t_total=10.9078
+RES|N=8192|b=512|grid=1x1|p=1|T=1|rep=2|t_total=10.8586|t_comp_max=10.7544|t_comm_max=0.1040|t_comp_mean=10.7544|t_comm_mean=0.1040|gflops=33.75|pivots=0
+PROC|N=8192|b=512|grid=1x1|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=10.7544|t_comm=0.1040|t_total=10.8586
+### fin=12:12:41 codigo=0
+### conf=1 grid=1x2 p=2 T=1 b=512 extra='' inicio=12:12:41
+RES|N=8192|b=512|grid=1x2|p=2|T=1|rep=0|t_total=6.5127|t_comp_max=5.9489|t_comm_max=1.1054|t_comp_mean=5.6780|t_comm_mean=0.8345|gflops=56.28|pivots=0
+PROC|N=8192|b=512|grid=1x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=5.4071|t_comm=1.1054|t_total=6.5127
+PROC|N=8192|b=512|grid=1x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=5.9489|t_comm=0.5636|t_total=6.5127
+RES|N=8192|b=512|grid=1x2|p=2|T=1|rep=1|t_total=6.5056|t_comp_max=5.9312|t_comm_max=1.0893|t_comp_mean=5.6732|t_comm_mean=0.8313|gflops=56.34|pivots=0
+PROC|N=8192|b=512|grid=1x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=5.4152|t_comm=1.0893|t_total=6.5047
+PROC|N=8192|b=512|grid=1x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=5.9312|t_comm=0.5733|t_total=6.5056
+RES|N=8192|b=512|grid=1x2|p=2|T=1|rep=2|t_total=6.5490|t_comp_max=5.9765|t_comm_max=1.1024|t_comp_mean=5.7110|t_comm_mean=0.8369|gflops=55.96|pivots=0
+PROC|N=8192|b=512|grid=1x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=5.4455|t_comm=1.1024|t_total=6.5481
+PROC|N=8192|b=512|grid=1x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=5.9765|t_comm=0.5714|t_total=6.5490
+### fin=12:13:04 codigo=0
+### conf=1 grid=2x1 p=2 T=1 b=512 extra='' inicio=12:13:05
+RES|N=8192|b=512|grid=2x1|p=2|T=1|rep=0|t_total=6.5778|t_comp_max=5.7693|t_comm_max=1.2181|t_comp_mean=5.5644|t_comm_mean=1.0132|gflops=55.72|pivots=0
+PROC|N=8192|b=512|grid=2x1|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=5.3594|t_comm=1.2181|t_total=6.5778
+PROC|N=8192|b=512|grid=2x1|T=1|rep=0|rank=1|row=1|col=0|host=ventress|t_comp=5.7693|t_comm=0.8083|t_total=6.5778
+RES|N=8192|b=512|grid=2x1|p=2|T=1|rep=1|t_total=6.6009|t_comp_max=5.7916|t_comm_max=1.2298|t_comp_mean=5.5812|t_comm_mean=1.0195|gflops=55.52|pivots=0
+PROC|N=8192|b=512|grid=2x1|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=5.3708|t_comm=1.2298|t_total=6.6009
+PROC|N=8192|b=512|grid=2x1|T=1|rep=1|rank=1|row=1|col=0|host=ventress|t_comp=5.7916|t_comm=0.8091|t_total=6.6009
+RES|N=8192|b=512|grid=2x1|p=2|T=1|rep=2|t_total=6.7098|t_comp_max=5.9193|t_comm_max=1.2480|t_comp_mean=5.6905|t_comm_mean=1.0191|gflops=54.62|pivots=0
+PROC|N=8192|b=512|grid=2x1|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=5.4616|t_comm=1.2480|t_total=6.7098
+PROC|N=8192|b=512|grid=2x1|T=1|rep=2|rank=1|row=1|col=0|host=ventress|t_comp=5.9193|t_comm=0.7903|t_total=6.7098
+### fin=12:13:28 codigo=0
+### conf=2 grid=2x2 p=4 T=1 b=512 extra='' inicio=12:13:28
+RES|N=8192|b=512|grid=2x2|p=4|T=1|rep=0|t_total=3.9206|t_comp_max=3.2844|t_comm_max=1.1633|t_comp_mean=2.9964|t_comm_mean=0.9180|gflops=93.48|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.7336|t_comm=1.1633|t_total=3.8971
+PROC|N=8192|b=512|grid=2x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=3.0021|t_comm=0.9182|t_total=3.9206
+PROC|N=8192|b=512|grid=2x2|T=1|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.9654|t_comm=0.9546|t_total=3.9202
+PROC|N=8192|b=512|grid=2x2|T=1|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=3.2844|t_comm=0.6359|t_total=3.9205
+RES|N=8192|b=512|grid=2x2|p=4|T=1|rep=1|t_total=3.8779|t_comp_max=3.2776|t_comm_max=1.1253|t_comp_mean=2.9782|t_comm_mean=0.8935|gflops=94.51|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.7288|t_comm=1.1253|t_total=3.8543
+PROC|N=8192|b=512|grid=2x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.9662|t_comm=0.9115|t_total=3.8779
+PROC|N=8192|b=512|grid=2x2|T=1|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=2.9400|t_comm=0.9372|t_total=3.8774
+PROC|N=8192|b=512|grid=2x2|T=1|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=3.2776|t_comm=0.6000|t_total=3.8779
+RES|N=8192|b=512|grid=2x2|p=4|T=1|rep=2|t_total=3.8735|t_comp_max=3.2754|t_comm_max=1.1363|t_comp_mean=2.9702|t_comm_mean=0.8971|gflops=94.62|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.7134|t_comm=1.1363|t_total=3.8499
+PROC|N=8192|b=512|grid=2x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.9624|t_comm=0.9108|t_total=3.8735
+PROC|N=8192|b=512|grid=2x2|T=1|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.9296|t_comm=0.9433|t_total=3.8730
+PROC|N=8192|b=512|grid=2x2|T=1|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.2754|t_comm=0.5979|t_total=3.8735
+### fin=12:13:44 codigo=0
+### conf=3 grid=2x4 p=8 T=1 b=512 extra='' inicio=12:13:44
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=0|t_total=4.2519|t_comp_max=3.2634|t_comm_max=1.8024|t_comp_mean=2.8393|t_comm_mean=1.3970|gflops=86.20|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.4113|t_comm=1.8024|t_total=4.2155
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.6489|t_comm=1.5648|t_total=4.2139
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=2.8678|t_comm=1.3452|t_total=4.2132
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=2.9737|t_comm=1.2760|t_total=4.2499
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=4|row=1|col=0|host=ventress|t_comp=2.5795|t_comm=1.6701|t_total=4.2499
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=5|row=1|col=1|host=ventress|t_comp=2.8756|t_comm=1.3747|t_total=4.2518
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=6|row=1|col=2|host=ventress|t_comp=3.0939|t_comm=1.1563|t_total=4.2505
+PROC|N=8192|b=512|grid=2x4|T=1|rep=0|rank=7|row=1|col=3|host=ventress|t_comp=3.2634|t_comm=0.9862|t_total=4.2499
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=1|t_total=4.1940|t_comp_max=3.2413|t_comm_max=1.7540|t_comp_mean=2.8275|t_comm_mean=1.3504|gflops=87.39|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.4005|t_comm=1.7540|t_total=4.1568
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.6335|t_comm=1.5210|t_total=4.1547
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=2.8534|t_comm=1.3004|t_total=4.1540
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=2.9683|t_comm=1.2235|t_total=4.1921
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=4|row=1|col=0|host=ventress|t_comp=2.5714|t_comm=1.6204|t_total=4.1921
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=5|row=1|col=1|host=ventress|t_comp=2.8568|t_comm=1.3356|t_total=4.1940
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=6|row=1|col=2|host=ventress|t_comp=3.0946|t_comm=1.0978|t_total=4.1926
+PROC|N=8192|b=512|grid=2x4|T=1|rep=1|rank=7|row=1|col=3|host=ventress|t_comp=3.2413|t_comm=0.9506|t_total=4.1921
+RES|N=8192|b=512|grid=2x4|p=8|T=1|rep=2|t_total=4.1988|t_comp_max=3.2628|t_comm_max=1.7513|t_comp_mean=2.8338|t_comm_mean=1.3497|gflops=87.29|pivots=0
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.4098|t_comm=1.7513|t_total=4.1633
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.6402|t_comm=1.5209|t_total=4.1613
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=2.8558|t_comm=1.3047|t_total=4.1607
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=2.9768|t_comm=1.2199|t_total=4.1969
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=4|row=1|col=0|host=ventress|t_comp=2.5598|t_comm=1.6369|t_total=4.1969
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=5|row=1|col=1|host=ventress|t_comp=2.8632|t_comm=1.3341|t_total=4.1988
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=6|row=1|col=2|host=ventress|t_comp=3.1017|t_comm=1.0956|t_total=4.1975
+PROC|N=8192|b=512|grid=2x4|T=1|rep=2|rank=7|row=1|col=3|host=ventress|t_comp=3.2628|t_comm=0.9339|t_total=4.1969
+### fin=12:14:00 codigo=0
+### conf=3 grid=4x2 p=8 T=1 b=512 extra='' inicio=12:14:00
+RES|N=8192|b=512|grid=4x2|p=8|T=1|rep=0|t_total=4.2832|t_comp_max=3.3040|t_comm_max=1.8729|t_comp_mean=2.8274|t_comm_mean=1.4395|gflops=85.57|pivots=0
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.3716|t_comm=1.8729|t_total=4.2464
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.5863|t_comm=1.6943|t_total=4.2809
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.6765|t_comm=1.5680|t_total=4.2448
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=2.7817|t_comm=1.4995|t_total=4.2832
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=4|row=2|col=0|host=ventress|t_comp=2.8403|t_comm=1.4030|t_total=4.2435
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=5|row=2|col=1|host=ventress|t_comp=3.0788|t_comm=1.2025|t_total=4.2815
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=6|row=3|col=0|host=ventress|t_comp=2.9801|t_comm=1.2994|t_total=4.2798
+PROC|N=8192|b=512|grid=4x2|T=1|rep=0|rank=7|row=3|col=1|host=ventress|t_comp=3.3040|t_comm=0.9760|t_total=4.2802
+RES|N=8192|b=512|grid=4x2|p=8|T=1|rep=1|t_total=4.2014|t_comp_max=3.2706|t_comm_max=1.8202|t_comp_mean=2.7987|t_comm_mean=1.3870|gflops=87.23|pivots=0
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.3433|t_comm=1.8202|t_total=4.1651
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.5572|t_comm=1.6422|t_total=4.1997
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=2.6544|t_comm=1.5091|t_total=4.1637
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=2.7470|t_comm=1.4531|t_total=4.2014
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=4|row=2|col=0|host=ventress|t_comp=2.8099|t_comm=1.3523|t_total=4.1625
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=5|row=2|col=1|host=ventress|t_comp=3.0662|t_comm=1.1338|t_total=4.2003
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=6|row=3|col=0|host=ventress|t_comp=2.9407|t_comm=1.2575|t_total=4.1985
+PROC|N=8192|b=512|grid=4x2|T=1|rep=1|rank=7|row=3|col=1|host=ventress|t_comp=3.2706|t_comm=0.9282|t_total=4.1990
+RES|N=8192|b=512|grid=4x2|p=8|T=1|rep=2|t_total=4.1959|t_comp_max=3.2687|t_comm_max=1.8088|t_comp_mean=2.7952|t_comm_mean=1.3849|gflops=87.35|pivots=0
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.3491|t_comm=1.8088|t_total=4.1596
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.5530|t_comm=1.6409|t_total=4.1941
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.6454|t_comm=1.5125|t_total=4.1581
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=2.7382|t_comm=1.4563|t_total=4.1959
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=4|row=2|col=0|host=ventress|t_comp=2.8055|t_comm=1.3512|t_total=4.1569
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=5|row=2|col=1|host=ventress|t_comp=3.0565|t_comm=1.1380|t_total=4.1947
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=6|row=3|col=0|host=ventress|t_comp=2.9454|t_comm=1.2473|t_total=4.1929
+PROC|N=8192|b=512|grid=4x2|T=1|rep=2|rank=7|row=3|col=1|host=ventress|t_comp=3.2687|t_comm=0.9245|t_total=4.1935
+### fin=12:14:17 codigo=0
+### conf=0 grid=1x1 p=1 T=1 b=128 extra='' inicio=12:14:17
+RES|N=8192|b=128|grid=1x1|p=1|T=1|rep=0|t_total=14.8124|t_comp_max=14.6405|t_comm_max=0.1714|t_comp_mean=14.6405|t_comm_mean=0.1714|gflops=24.74|pivots=0
+PROC|N=8192|b=128|grid=1x1|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=14.6405|t_comm=0.1714|t_total=14.8124
+RES|N=8192|b=128|grid=1x1|p=1|T=1|rep=1|t_total=14.6785|t_comp_max=14.5651|t_comm_max=0.1129|t_comp_mean=14.5651|t_comm_mean=0.1129|gflops=24.97|pivots=0
+PROC|N=8192|b=128|grid=1x1|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=14.5651|t_comm=0.1129|t_total=14.6785
+RES|N=8192|b=128|grid=1x1|p=1|T=1|rep=2|t_total=14.8790|t_comp_max=14.7627|t_comm_max=0.1158|t_comp_mean=14.7627|t_comm_mean=0.1158|gflops=24.63|pivots=0
+PROC|N=8192|b=128|grid=1x1|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=14.7627|t_comm=0.1158|t_total=14.8790
+### fin=12:15:06 codigo=0
+### conf=1 grid=1x2 p=2 T=1 b=128 extra='' inicio=12:15:06
+RES|N=8192|b=128|grid=1x2|p=2|T=1|rep=0|t_total=8.3757|t_comp_max=7.8609|t_comm_max=0.6249|t_comp_mean=7.8055|t_comm_mean=0.5696|gflops=43.76|pivots=0
+PROC|N=8192|b=128|grid=1x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=7.7502|t_comm=0.6249|t_total=8.3756
+PROC|N=8192|b=128|grid=1x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=7.8609|t_comm=0.5142|t_total=8.3756
+RES|N=8192|b=128|grid=1x2|p=2|T=1|rep=1|t_total=8.2901|t_comp_max=7.8973|t_comm_max=0.6299|t_comp_mean=7.7785|t_comm_mean=0.5111|gflops=44.21|pivots=0
+PROC|N=8192|b=128|grid=1x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=7.6596|t_comm=0.6299|t_total=8.2901
+PROC|N=8192|b=128|grid=1x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=7.8973|t_comm=0.3923|t_total=8.2901
+RES|N=8192|b=128|grid=1x2|p=2|T=1|rep=2|t_total=8.2745|t_comp_max=7.8890|t_comm_max=0.6352|t_comp_mean=7.7639|t_comm_mean=0.5101|gflops=44.29|pivots=0
+PROC|N=8192|b=128|grid=1x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=7.6388|t_comm=0.6352|t_total=8.2744
+PROC|N=8192|b=128|grid=1x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=7.8890|t_comm=0.3849|t_total=8.2744
+### fin=12:15:35 codigo=0
+### conf=1 grid=2x1 p=2 T=1 b=128 extra='' inicio=12:15:35
+RES|N=8192|b=128|grid=2x1|p=2|T=1|rep=0|t_total=8.3774|t_comp_max=7.9206|t_comm_max=0.6325|t_comp_mean=7.8324|t_comm_mean=0.5444|gflops=43.75|pivots=0
+PROC|N=8192|b=128|grid=2x1|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=7.7443|t_comm=0.6325|t_total=8.3774
+PROC|N=8192|b=128|grid=2x1|T=1|rep=0|rank=1|row=1|col=0|host=ventress|t_comp=7.9206|t_comm=0.4562|t_total=8.3774
+RES|N=8192|b=128|grid=2x1|p=2|T=1|rep=1|t_total=8.3533|t_comp_max=7.9310|t_comm_max=0.6180|t_comp_mean=7.8329|t_comm_mean=0.5199|gflops=43.88|pivots=0
+PROC|N=8192|b=128|grid=2x1|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=7.7348|t_comm=0.6180|t_total=8.3533
+PROC|N=8192|b=128|grid=2x1|T=1|rep=1|rank=1|row=1|col=0|host=ventress|t_comp=7.9310|t_comm=0.4218|t_total=8.3533
+RES|N=8192|b=128|grid=2x1|p=2|T=1|rep=2|t_total=8.3687|t_comp_max=7.9460|t_comm_max=0.6012|t_comp_mean=7.8564|t_comm_mean=0.5117|gflops=43.79|pivots=0
+PROC|N=8192|b=128|grid=2x1|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=7.7669|t_comm=0.6012|t_total=8.3686
+PROC|N=8192|b=128|grid=2x1|T=1|rep=2|rank=1|row=1|col=0|host=ventress|t_comp=7.9460|t_comm=0.4222|t_total=8.3686
+### fin=12:16:05 codigo=0
+### conf=2 grid=2x2 p=4 T=1 b=128 extra='' inicio=12:16:05
+RES|N=8192|b=128|grid=2x2|p=4|T=1|rep=0|t_total=4.8563|t_comp_max=4.3463|t_comm_max=0.7282|t_comp_mean=4.2481|t_comm_mean=0.6074|gflops=75.47|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=4.1267|t_comm=0.7282|t_total=4.8555
+PROC|N=8192|b=128|grid=2x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=4.2781|t_comm=0.5775|t_total=4.8562
+PROC|N=8192|b=128|grid=2x2|T=1|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=4.2414|t_comm=0.6144|t_total=4.8563
+PROC|N=8192|b=128|grid=2x2|T=1|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=4.3463|t_comm=0.5095|t_total=4.8563
+RES|N=8192|b=128|grid=2x2|p=4|T=1|rep=1|t_total=4.7226|t_comp_max=4.2995|t_comm_max=0.6128|t_comp_mean=4.2065|t_comm_mean=0.5154|gflops=77.61|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=4.1086|t_comm=0.6128|t_total=4.7218
+PROC|N=8192|b=128|grid=2x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=4.2254|t_comm=0.4968|t_total=4.7226
+PROC|N=8192|b=128|grid=2x2|T=1|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=4.1926|t_comm=0.5295|t_total=4.7226
+PROC|N=8192|b=128|grid=2x2|T=1|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=4.2995|t_comm=0.4227|t_total=4.7226
+RES|N=8192|b=128|grid=2x2|p=4|T=1|rep=2|t_total=4.7250|t_comp_max=4.3239|t_comm_max=0.6221|t_comp_mean=4.2125|t_comm_mean=0.5118|gflops=77.57|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=4.1015|t_comm=0.6221|t_total=4.7241
+PROC|N=8192|b=128|grid=2x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=4.2363|t_comm=0.4882|t_total=4.7250
+PROC|N=8192|b=128|grid=2x2|T=1|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=4.1883|t_comm=0.5362|t_total=4.7250
+PROC|N=8192|b=128|grid=2x2|T=1|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=4.3239|t_comm=0.4007|t_total=4.7250
+### fin=12:16:23 codigo=0
+### conf=3 grid=2x4 p=8 T=1 b=128 extra='' inicio=12:16:23
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=0|t_total=5.0611|t_comp_max=4.3516|t_comm_max=1.0462|t_comp_mean=4.1810|t_comm_mean=0.8789|gflops=72.42|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=4.0128|t_comm=1.0462|t_total=5.0598
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=4.1087|t_comm=0.9503|t_total=5.0598
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=2|row=0|col=2|host=ventress|t_comp=4.1853|t_comm=0.8737|t_total=5.0598
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=3|row=0|col=3|host=ventress|t_comp=4.2507|t_comm=0.8097|t_total=5.0611
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=4|row=1|col=0|host=ventress|t_comp=4.0981|t_comm=0.9623|t_total=5.0611
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=5|row=1|col=1|host=ventress|t_comp=4.1860|t_comm=0.8744|t_total=5.0611
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=6|row=1|col=2|host=ventress|t_comp=4.2545|t_comm=0.8059|t_total=5.0611
+PROC|N=8192|b=128|grid=2x4|T=1|rep=0|rank=7|row=1|col=3|host=ventress|t_comp=4.3516|t_comm=0.7088|t_total=5.0611
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=1|t_total=4.9549|t_comp_max=4.3086|t_comm_max=0.9778|t_comp_mean=4.1442|t_comm_mean=0.8095|gflops=73.97|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=3.9750|t_comm=0.9778|t_total=4.9535
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=4.0958|t_comm=0.8570|t_total=4.9535
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=2|row=0|col=2|host=ventress|t_comp=4.1160|t_comm=0.8369|t_total=4.9535
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=3|row=0|col=3|host=ventress|t_comp=4.2384|t_comm=0.7158|t_total=4.9549
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=4|row=1|col=0|host=ventress|t_comp=4.0565|t_comm=0.8977|t_total=4.9548
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=5|row=1|col=1|host=ventress|t_comp=4.1429|t_comm=0.8113|t_total=4.9548
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=6|row=1|col=2|host=ventress|t_comp=4.2206|t_comm=0.7335|t_total=4.9548
+PROC|N=8192|b=128|grid=2x4|T=1|rep=1|rank=7|row=1|col=3|host=ventress|t_comp=4.3086|t_comm=0.6457|t_total=4.9549
+RES|N=8192|b=128|grid=2x4|p=8|T=1|rep=2|t_total=4.9384|t_comp_max=4.3140|t_comm_max=0.9498|t_comp_mean=4.1433|t_comm_mean=0.7940|gflops=74.21|pivots=0
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=3.9866|t_comm=0.9498|t_total=4.9371
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=4.0731|t_comm=0.8633|t_total=4.9371
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=2|row=0|col=2|host=ventress|t_comp=4.1424|t_comm=0.7941|t_total=4.9371
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=3|row=0|col=3|host=ventress|t_comp=4.2223|t_comm=0.7155|t_total=4.9384
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=4|row=1|col=0|host=ventress|t_comp=4.0526|t_comm=0.8852|t_total=4.9384
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=5|row=1|col=1|host=ventress|t_comp=4.1349|t_comm=0.8029|t_total=4.9384
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=6|row=1|col=2|host=ventress|t_comp=4.2207|t_comm=0.7170|t_total=4.9384
+PROC|N=8192|b=128|grid=2x4|T=1|rep=2|rank=7|row=1|col=3|host=ventress|t_comp=4.3140|t_comm=0.6238|t_total=4.9384
+### fin=12:16:42 codigo=0
+### conf=3 grid=4x2 p=8 T=1 b=128 extra='' inicio=12:16:42
+RES|N=8192|b=128|grid=4x2|p=8|T=1|rep=0|t_total=4.7447|t_comp_max=4.0074|t_comm_max=1.0410|t_comp_mean=3.8707|t_comm_mean=0.8728|gflops=77.25|pivots=0
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=3.7016|t_comm=1.0410|t_total=4.7434
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=3.7956|t_comm=0.9482|t_total=4.7446
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=3.8391|t_comm=0.9036|t_total=4.7434
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=3.9011|t_comm=0.8427|t_total=4.7446
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=4|row=2|col=0|host=ventress|t_comp=3.8838|t_comm=0.8588|t_total=4.7434
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=5|row=2|col=1|host=ventress|t_comp=3.9040|t_comm=0.8399|t_total=4.7446
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=6|row=3|col=0|host=ventress|t_comp=3.9326|t_comm=0.8113|t_total=4.7446
+PROC|N=8192|b=128|grid=4x2|T=1|rep=0|rank=7|row=3|col=1|host=ventress|t_comp=4.0074|t_comm=0.7366|t_total=4.7446
+RES|N=8192|b=128|grid=4x2|p=8|T=1|rep=1|t_total=4.6846|t_comp_max=3.9977|t_comm_max=0.9610|t_comp_mean=3.8708|t_comm_mean=0.8127|gflops=78.24|pivots=0
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=3.7216|t_comm=0.9610|t_total=4.6833
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=3.7841|t_comm=0.8998|t_total=4.6846
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=3.8390|t_comm=0.8436|t_total=4.6833
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=3.8858|t_comm=0.7981|t_total=4.6846
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=4|row=2|col=0|host=ventress|t_comp=3.8998|t_comm=0.7828|t_total=4.6833
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=5|row=2|col=1|host=ventress|t_comp=3.8945|t_comm=0.7895|t_total=4.6846
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=6|row=3|col=0|host=ventress|t_comp=3.9437|t_comm=0.7402|t_total=4.6845
+PROC|N=8192|b=128|grid=4x2|T=1|rep=1|rank=7|row=3|col=1|host=ventress|t_comp=3.9977|t_comm=0.6862|t_total=4.6846
+RES|N=8192|b=128|grid=4x2|p=8|T=1|rep=2|t_total=4.7015|t_comp_max=4.0193|t_comm_max=0.9815|t_comp_mean=3.8810|t_comm_mean=0.8193|gflops=77.96|pivots=0
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=3.7180|t_comm=0.9815|t_total=4.7002
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=3.7911|t_comm=0.9096|t_total=4.7014
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=3.8451|t_comm=0.8544|t_total=4.7002
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.9025|t_comm=0.7982|t_total=4.7014
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=4|row=2|col=0|host=ventress|t_comp=3.9058|t_comm=0.7937|t_total=4.7002
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=5|row=2|col=1|host=ventress|t_comp=3.9178|t_comm=0.7830|t_total=4.7014
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=6|row=3|col=0|host=ventress|t_comp=3.9487|t_comm=0.7521|t_total=4.7014
+PROC|N=8192|b=128|grid=4x2|T=1|rep=2|rank=7|row=3|col=1|host=ventress|t_comp=4.0193|t_comm=0.6816|t_total=4.7014
+### fin=12:17:00 codigo=0
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#40606) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------

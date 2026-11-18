@@ -1,0 +1,277 @@
+===== INFO ventress Wed Nov 18 12:01:51 PM -03 2026 =====
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  40
+On-line CPU(s) list:                     0-39
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) CPU E5-2640 v4 @ 2.40GHz
+CPU family:                              6
+Model:                                   79
+Thread(s) per core:                      2
+Core(s) per socket:                      10
+Socket(s):                               2
+Stepping:                                1
+CPU(s) scaling MHz:                      43%
+CPU max MHz:                             3400.0000
+CPU min MHz:                             1200.0000
+BogoMIPS:                                4788.84
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 pti intel_ppin ssbd ibrs ibpb stibp tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm rdt_a rdseed adx smap intel_pt xsaveopt cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts vnmi md_clear flush_l1d ibpb_exit_to_user
+Virtualization:                          VT-x
+L1d cache:                               640 KiB (20 instances)
+L1i cache:                               640 KiB (20 instances)
+L2 cache:                                5 MiB (20 instances)
+L3 cache:                                50 MiB (2 instances)
+NUMA node(s):                            2
+NUMA node0 CPU(s):                       0-9,20-29
+NUMA node1 CPU(s):                       10-19,30-39
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             KVM: Mitigation: VMX disabled
+Vulnerability L1tf:                      Mitigation; PTE Inversion; VMX conditional cache flushes, SMT vulnerable
+Vulnerability Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Meltdown:                  Mitigation; PTI
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP conditional; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+--- memoria
+               total        used        free      shared  buff/cache   available
+Mem:             251           4         183           0          65         246
+Swap:              0           0           0
+--- red
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp13s0f0        UP             a0:42:3f:3c:c6:a2 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp13s0f1        DOWN           a0:42:3f:3c:c6:a3 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+--- versiones
+mpirun (Open MPI) 5.0.11
+
+/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/python3.12/site-packages/numpy/__config__.py:155: UserWarning: Install `pyyaml` for better output
+  warnings.warn("Install `pyyaml` for better output", stacklevel=1)
+python 3.12.16
+numpy 2.5.4 scipy 1.18.1 mpi4py 4.1.2
+{
+  "Compilers": {
+    "c": {
+      "name": "gcc",
+      "linker": "ld.bfd",
+      "version": "15.3.0",
+      "commands": "x86_64-conda-linux-gnu-cc",
+      "args": "-march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "linker args": "-Wl,-O2, -Wl,--sort-common, -Wl,--as-needed, -Wl,-z,relro, -Wl,-z,now, -Wl,--disable-new-dtags, -Wl,--gc-sections, -Wl,--allow-shlib-undefined, -Wl,-rpath,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -Wl,-rpath-link,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -L/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include"
+    },
+    "cython": {
+      "name": "cython",
+      "linker": "cython",
+      "version": "3.3.0",
+      "commands": "cython"
+    },
+    "c++": {
+      "name": "gcc",
+      "linker": "ld.bfd",
+      "version": "15.3.0",
+      "commands": "x86_64-conda-linux-gnu-c++",
+      "args": "-fvisibility-inlines-hidden, -fmessage-length=0, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "linker args": "-Wl,-O2, -Wl,--sort-common, -Wl,--as-needed, -Wl,-z,relro, -Wl,-z,now, -Wl,--disable-new-dtags, -Wl,--gc-sections, -Wl,--allow-shlib-undefined, -Wl,-rpath,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -Wl,-rpath-link,/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -L/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib, -fvisibility-inlines-hidden, -fmessage-length=0, -march=nocona, -mtune=haswell, -ftree-vectorize, -fPIC, -fstack-protector-strong, -fno-plt, -O2, -ffunction-sections, -pipe, -fno-merge-constants, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include, -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675329/work=/usr/local/src/conda/numpy-2.5.4, -fdebug-prefix-map=/home/grupo18-iic3533/miniconda3/envs/hpc_mpi=/usr/local/src/conda-prefix, -DNDEBUG, -D_FORTIFY_SOURCE=2, -O2, -isystem, /home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include"
+    }
+  },
+  "Machine Information": {
+    "host": {
+      "cpu": "x86_64",
+      "family": "x86_64",
+      "endian": "little",
+      "system": "linux"
+    },
+    "build": {
+      "cpu": "x86_64",
+      "family": "x86_64",
+      "endian": "little",
+      "system": "linux"
+    }
+  },
+  "Build Dependencies": {
+    "blas": {
+      "name": "blas",
+      "found": true,
+      "version": "3.9.0",
+      "detection method": "pkgconfig",
+      "include directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "lib directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib",
+      "openblas configuration": "unknown",
+      "pc file directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/pkgconfig"
+    },
+    "lapack": {
+      "name": "lapack",
+      "found": true,
+      "version": "3.9.0",
+      "detection method": "pkgconfig",
+      "include directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/include",
+      "lib directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib",
+      "openblas configuration": "unknown",
+      "pc file directory": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/lib/pkgconfig"
+    }
+  },
+  "Python Information": {
+    "path": "/home/grupo18-iic3533/miniconda3/envs/hpc_mpi/bin/python",
+    "version": "3.12"
+  },
+  "SIMD Extensions": {
+    "baseline": [
+      "X86_V2"
+    ],
+    "found": [
+      "X86_V3"
+    ],
+    "not found": [
+      "X86_V4",
+      "AVX512_ICL",
+      "AVX512_SPR"
+    ]
+  }
+}
+===== FIN INFO =====
+### conf=2 grid=2x2 p=4 T=2 b=4096 extra='' inicio=12:01:58
+RES|N=8192|b=4096|grid=2x2|p=4|T=2|rep=0|t_total=10.1819|t_comp_max=5.6279|t_comm_max=8.1430|t_comp_mean=2.9920|t_comm_mean=5.1541|gflops=36.00|pivots=0
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=1.9701|t_comm=0.1058|t_total=2.0771
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.3645|t_comm=7.8149|t_total=10.1802
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.0056|t_comm=8.1430|t_total=10.1493
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=5.6279|t_comm=4.5527|t_total=10.1818
+RES|N=8192|b=4096|grid=2x2|p=4|T=2|rep=1|t_total=10.1145|t_comp_max=5.6127|t_comm_max=8.0862|t_comp_mean=2.9726|t_comm_mean=5.1167|gflops=36.24|pivots=0
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=1.9456|t_comm=0.1041|t_total=2.0509
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.3364|t_comm=7.7757|t_total=10.1127
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=1.9956|t_comm=8.0862|t_total=10.0824
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=5.6127|t_comm=4.5005|t_total=10.1144
+RES|N=8192|b=4096|grid=2x2|p=4|T=2|rep=2|t_total=10.1167|t_comp_max=5.6022|t_comm_max=8.0828|t_comp_mean=2.9744|t_comm_mean=5.1179|gflops=36.23|pivots=0
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=1.9471|t_comm=0.1086|t_total=2.0570
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.3474|t_comm=7.7669|t_total=10.1150
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.0008|t_comm=8.0828|t_total=10.0842
+PROC|N=8192|b=4096|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=5.6022|t_comm=4.5133|t_total=10.1167
+### fin=12:02:36 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=2048 extra='' inicio=12:02:36
+RES|N=8192|b=2048|grid=2x2|p=4|T=2|rep=0|t_total=6.0904|t_comp_max=4.1752|t_comm_max=3.4434|t_comp_mean=2.9781|t_comm_mean=2.8076|gflops=60.18|pivots=0
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.2758|t_comm=2.6076|t_total=4.8839
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.8237|t_comm=3.2652|t_total=6.0892
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.6377|t_comm=3.4434|t_total=6.0815
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=4.1752|t_comm=1.9142|t_total=6.0903
+RES|N=8192|b=2048|grid=2x2|p=4|T=2|rep=1|t_total=6.0332|t_comp_max=4.1020|t_comm_max=3.3676|t_comp_mean=2.9569|t_comm_mean=2.7808|gflops=60.75|pivots=0
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.2817|t_comm=2.5796|t_total=4.8619
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.7867|t_comm=3.2452|t_total=6.0322
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=2.6570|t_comm=3.3676|t_total=6.0248
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=4.1020|t_comm=1.9306|t_total=6.0332
+RES|N=8192|b=2048|grid=2x2|p=4|T=2|rep=2|t_total=5.8450|t_comp_max=3.9753|t_comm_max=3.2051|t_comp_mean=2.8948|t_comm_mean=2.6825|gflops=62.70|pivots=0
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.1849|t_comm=2.5993|t_total=4.7847
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.7880|t_comm=3.0564|t_total=5.8447
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.6312|t_comm=3.2051|t_total=5.8366
+PROC|N=8192|b=2048|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.9753|t_comm=1.8692|t_total=5.8450
+### fin=12:02:58 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=1024 extra='' inicio=12:02:58
+RES|N=8192|b=1024|grid=2x2|p=4|T=2|rep=0|t_total=4.3842|t_comp_max=3.3303|t_comm_max=1.6524|t_comp_mean=2.9288|t_comm_mean=1.4149|gflops=83.60|pivots=0
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.5744|t_comm=1.6524|t_total=4.2270
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=2.9787|t_comm=1.4046|t_total=4.3842
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.8320|t_comm=1.5495|t_total=4.3827
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=3.3303|t_comm=1.0531|t_total=4.3835
+RES|N=8192|b=1024|grid=2x2|p=4|T=2|rep=1|t_total=4.3033|t_comp_max=3.2598|t_comm_max=1.6153|t_comp_mean=2.8790|t_comm_mean=1.3836|gflops=85.17|pivots=0
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.5296|t_comm=1.6153|t_total=4.1450
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=2.9171|t_comm=1.3853|t_total=4.3032
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=2.8095|t_comm=1.4911|t_total=4.3016
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=3.2598|t_comm=1.0425|t_total=4.3025
+RES|N=8192|b=1024|grid=2x2|p=4|T=2|rep=2|t_total=4.3014|t_comp_max=3.2726|t_comm_max=1.6159|t_comp_mean=2.8857|t_comm_mean=1.3759|gflops=85.21|pivots=0
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.5303|t_comm=1.6159|t_total=4.1463
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=2.9273|t_comm=1.3733|t_total=4.3014
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.8124|t_comm=1.4864|t_total=4.3002
+PROC|N=8192|b=1024|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.2726|t_comm=1.0280|t_total=4.3007
+### fin=12:03:14 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=512 extra='' inicio=12:03:14
+RES|N=8192|b=512|grid=2x2|p=4|T=2|rep=0|t_total=4.0066|t_comp_max=3.3231|t_comm_max=1.1036|t_comp_mean=3.0602|t_comm_mean=0.9396|gflops=91.48|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=2.8772|t_comm=1.1036|t_total=3.9810
+PROC|N=8192|b=512|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=3.0472|t_comm=0.9591|t_total=4.0065
+PROC|N=8192|b=512|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=2.9934|t_comm=1.0124|t_total=4.0060
+PROC|N=8192|b=512|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=3.3231|t_comm=0.6832|t_total=4.0065
+RES|N=8192|b=512|grid=2x2|p=4|T=2|rep=1|t_total=4.0315|t_comp_max=3.3769|t_comm_max=1.0867|t_comp_mean=3.1052|t_comm_mean=0.9194|gflops=90.91|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=2.9188|t_comm=1.0867|t_total=4.0056
+PROC|N=8192|b=512|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=3.0916|t_comm=0.9396|t_total=4.0314
+PROC|N=8192|b=512|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=3.0337|t_comm=0.9970|t_total=4.0309
+PROC|N=8192|b=512|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=3.3769|t_comm=0.6543|t_total=4.0314
+RES|N=8192|b=512|grid=2x2|p=4|T=2|rep=2|t_total=3.9900|t_comp_max=3.3487|t_comm_max=1.0919|t_comp_mean=3.0627|t_comm_mean=0.9206|gflops=91.86|pivots=0
+PROC|N=8192|b=512|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=2.8725|t_comm=1.0919|t_total=3.9646
+PROC|N=8192|b=512|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=3.0385|t_comm=0.9513|t_total=3.9899
+PROC|N=8192|b=512|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=2.9909|t_comm=0.9984|t_total=3.9894
+PROC|N=8192|b=512|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.3487|t_comm=0.6410|t_total=3.9899
+### fin=12:03:30 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=256 extra='' inicio=12:03:30
+RES|N=8192|b=256|grid=2x2|p=4|T=2|rep=0|t_total=4.2346|t_comp_max=3.6966|t_comm_max=0.9222|t_comp_mean=3.4838|t_comm_mean=0.7492|gflops=86.55|pivots=0
+PROC|N=8192|b=256|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=3.3074|t_comm=0.9222|t_total=4.2301
+PROC|N=8192|b=256|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=3.5426|t_comm=0.6916|t_total=4.2345
+PROC|N=8192|b=256|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=3.3886|t_comm=0.8454|t_total=4.2344
+PROC|N=8192|b=256|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=3.6966|t_comm=0.5376|t_total=4.2345
+RES|N=8192|b=256|grid=2x2|p=4|T=2|rep=1|t_total=4.1250|t_comp_max=3.6518|t_comm_max=0.8434|t_comp_mean=3.4441|t_comm_mean=0.6794|gflops=88.85|pivots=0
+PROC|N=8192|b=256|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=3.2768|t_comm=0.8434|t_total=4.1205
+PROC|N=8192|b=256|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=3.4897|t_comm=0.6349|t_total=4.1249
+PROC|N=8192|b=256|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=3.3580|t_comm=0.7665|t_total=4.1249
+PROC|N=8192|b=256|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=3.6518|t_comm=0.4729|t_total=4.1249
+RES|N=8192|b=256|grid=2x2|p=4|T=2|rep=2|t_total=4.1204|t_comp_max=3.6531|t_comm_max=0.8386|t_comp_mean=3.4403|t_comm_mean=0.6786|gflops=88.95|pivots=0
+PROC|N=8192|b=256|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=3.2770|t_comm=0.8386|t_total=4.1158
+PROC|N=8192|b=256|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=3.4886|t_comm=0.6315|t_total=4.1204
+PROC|N=8192|b=256|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=3.3425|t_comm=0.7775|t_total=4.1203
+PROC|N=8192|b=256|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=3.6531|t_comm=0.4670|t_total=4.1204
+### fin=12:03:46 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=128 extra='' inicio=12:03:46
+RES|N=8192|b=128|grid=2x2|p=4|T=2|rep=0|t_total=5.1134|t_comp_max=4.5099|t_comm_max=0.8401|t_comp_mean=4.3863|t_comm_mean=0.7262|gflops=71.67|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=4.3543|t_comm=0.7575|t_total=5.1124
+PROC|N=8192|b=128|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=4.4084|t_comm=0.7045|t_total=5.1134
+PROC|N=8192|b=128|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=4.2726|t_comm=0.8401|t_total=5.1134
+PROC|N=8192|b=128|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=4.5099|t_comm=0.6029|t_total=5.1134
+RES|N=8192|b=128|grid=2x2|p=4|T=2|rep=1|t_total=4.9070|t_comp_max=4.4850|t_comm_max=0.6514|t_comp_mean=4.3642|t_comm_mean=0.5419|gflops=74.69|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=4.3337|t_comm=0.5716|t_total=4.9059
+PROC|N=8192|b=128|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=4.3833|t_comm=0.5232|t_total=4.9070
+PROC|N=8192|b=128|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=4.2549|t_comm=0.6514|t_total=4.9069
+PROC|N=8192|b=128|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=4.4850|t_comm=0.4214|t_total=4.9070
+RES|N=8192|b=128|grid=2x2|p=4|T=2|rep=2|t_total=4.9399|t_comp_max=4.5259|t_comm_max=0.6645|t_comp_mean=4.3902|t_comm_mean=0.5489|gflops=74.19|pivots=0
+PROC|N=8192|b=128|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=4.3579|t_comm=0.5804|t_total=4.9389
+PROC|N=8192|b=128|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=4.4023|t_comm=0.5371|t_total=4.9399
+PROC|N=8192|b=128|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=4.2748|t_comm=0.6645|t_total=4.9399
+PROC|N=8192|b=128|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=4.5259|t_comm=0.4135|t_total=4.9399
+### fin=12:04:05 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=64 extra='' inicio=12:04:05
+RES|N=8192|b=64|grid=2x2|p=4|T=2|rep=0|t_total=7.1631|t_comp_max=6.5123|t_comm_max=0.8565|t_comp_mean=6.4122|t_comm_mean=0.7498|gflops=51.17|pivots=0
+PROC|N=8192|b=64|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=6.3266|t_comm=0.8350|t_total=7.1628
+PROC|N=8192|b=64|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=6.5123|t_comm=0.6498|t_total=7.1631
+PROC|N=8192|b=64|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=6.3056|t_comm=0.8565|t_total=7.1631
+PROC|N=8192|b=64|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=6.5044|t_comm=0.6578|t_total=7.1631
+RES|N=8192|b=64|grid=2x2|p=4|T=2|rep=1|t_total=6.8574|t_comp_max=6.4026|t_comm_max=0.6541|t_comp_mean=6.3113|t_comm_mean=0.5450|gflops=53.45|pivots=0
+PROC|N=8192|b=64|grid=2x2|T=2|rep=1|rank=0|row=0|col=0|host=ventress|t_comp=6.2537|t_comm=0.6022|t_total=6.8570
+PROC|N=8192|b=64|grid=2x2|T=2|rep=1|rank=1|row=0|col=1|host=ventress|t_comp=6.3865|t_comm=0.4700|t_total=6.8574
+PROC|N=8192|b=64|grid=2x2|T=2|rep=1|rank=2|row=1|col=0|host=ventress|t_comp=6.2022|t_comm=0.6541|t_total=6.8574
+PROC|N=8192|b=64|grid=2x2|T=2|rep=1|rank=3|row=1|col=1|host=ventress|t_comp=6.4026|t_comm=0.4537|t_total=6.8574
+RES|N=8192|b=64|grid=2x2|p=4|T=2|rep=2|t_total=6.9481|t_comp_max=6.5076|t_comm_max=0.6737|t_comp_mean=6.3917|t_comm_mean=0.5553|gflops=52.75|pivots=0
+PROC|N=8192|b=64|grid=2x2|T=2|rep=2|rank=0|row=0|col=0|host=ventress|t_comp=6.3297|t_comm=0.6169|t_total=6.9477
+PROC|N=8192|b=64|grid=2x2|T=2|rep=2|rank=1|row=0|col=1|host=ventress|t_comp=6.4561|t_comm=0.4910|t_total=6.9481
+PROC|N=8192|b=64|grid=2x2|T=2|rep=2|rank=2|row=1|col=0|host=ventress|t_comp=6.2734|t_comm=0.6737|t_total=6.9480
+PROC|N=8192|b=64|grid=2x2|T=2|rep=2|rank=3|row=1|col=1|host=ventress|t_comp=6.5076|t_comm=0.4396|t_total=6.9481
+### fin=12:04:30 codigo=0
+### conf=2 grid=2x2 p=4 T=2 b=8192 extra='' inicio=12:04:30
+RES|N=8192|b=8192|grid=2x2|p=4|T=2|rep=0|t_total=11.4985|t_comp_max=11.0872|t_comm_max=11.4949|t_comp_mean=2.7718|t_comm_mean=5.7984|gflops=31.87|pivots=0
+PROC|N=8192|b=8192|grid=2x2|T=2|rep=0|rank=0|row=0|col=0|host=ventress|t_comp=11.0872|t_comm=0.4077|t_total=11.4985
+PROC|N=8192|b=8192|grid=2x2|T=2|rep=0|rank=1|row=0|col=1|host=ventress|t_comp=0.0000|t_comm=11.2910|t_total=11.2926
+PROC|N=8192|b=8192|grid=2x2|T=2|rep=0|rank=2|row=1|col=0|host=ventress|t_comp=0.0000|t_comm=11.4949|t_total=11.4966
+PROC|N=8192|b=8192|grid=2x2|T=2|rep=0|rank=3|row=1|col=1|host=ventress|t_comp=0.0000|t_comm=0.0000|t_total=0.0001
+### fin=12:04:45 codigo=0
+
+------------------------------------------------------------------------
+[Slurm] Este trabajo (#40605) terminó SIN reporte de rendimiento por correo.
+Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
+(y sugerencias para que esperen menos en cola) agregando esta línea
+en tu script de sbatch, junto a las líneas #SBATCH:
+
+    #SENDJOBREPORT
+
+Dudas: slurmjobs@cenia.cl
+------------------------------------------------------------------------
