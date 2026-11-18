@@ -14,10 +14,6 @@
 \lstset{basicstyle=\ttfamily\footnotesize,frame=single,breaklines=true,
         keywordstyle=\color{blue!60!black},commentstyle=\color{gray}}
 
-% Notas del borrador: borrar \nota{...} al redactar la version final.
-\newcommand{\nota}[1]{\par\noindent\colorbox{yellow!25}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small\textbf{Borrador:} #1}}\par}
-% Datos que faltan: reemplazar \falta{...} por el valor medido.
-\newcommand{\falta}[1]{\textcolor{red}{\textbf{[#1]}}}
 \newcommand{\Tcomp}{T_{\text{comp}}}
 \newcommand{\Tcomm}{T_{\text{comm}}}
 \newcommand{\Ttot}{T_{\text{total}}}
@@ -48,20 +44,18 @@ Como la matriz es diagonal dominante, la factorización se completa sin pivoteo,
 \toprule
  & \textbf{Computador personal} & \textbf{Cluster Kraken} \\
 \midrule
-CPU & Apple M5 (ARM64) & \falta{modelo CPU (\texttt{lscpu})} \\
-Cores & 10: 4 de rendimiento (P) + 6 de eficiencia (E), sin SMT & 40 CPUs por nodo; 2 nodos (\texttt{ventress}, \texttt{yodaxico}) \\
-Cachés & L1d 128 KB (P) / 64 KB (E); L2 16 MB (clúster P) + 6 MB (clúster E) & \falta{cachés} \\
+CPU & Apple M5 (ARM64) & Intel Xeon E5-2640 v4, 2.4 GHz (máx.\ 3.4 GHz) \\
+Cores & 10: 4 de rendimiento (P) + 6 de eficiencia (E), sin SMT & 2 sockets $\times$ 10 cores $\times$ 2 \emph{threads} (HT) = 40 CPUs por nodo; 2 nodos (\texttt{ventress}, \texttt{yodaxico}) \\
+Cachés & L1d 128 KB (P) / 64 KB (E); L2 16 MB (clúster P) + 6 MB (clúster E) & L1d 32 KB/core; L2 256 KB/core; L3 25 MB/socket \\
 Memoria & 16 GB unificada & $\sim$192 GB por nodo \\
 Límites del grupo & -- & 8 CPUs y 4 GB por nodo, 15 min por \emph{job} \\
-Red entre nodos & -- & \falta{Ethernet / InfiniBand} \\
-Sistema operativo & macOS 26.6 & \falta{SO del cluster} \\
-Python / MPI & Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 & Miniconda (\texttt{hpc\_mpi}), \falta{Open MPI x.y, mpi4py x.y} \\
-BLAS & Apple Accelerate & \falta{OpenBLAS / MKL} \\
+Red entre nodos & -- & Ethernet (\texttt{enp13s0f0}), sin InfiniBand \\
+Sistema operativo & macOS 26.6 & Linux \\
+Python / MPI & Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 & Miniconda: Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 \\
+BLAS & Apple Accelerate & BLAS/LAPACK de conda-forge (\texttt{libblas} 3.9.0) \\
 \bottomrule
 \end{tabular}
 \end{table}
-\nota{Completar la columna del \emph{cluster} con la salida de \texttt{info\_nodo} (al inicio de \texttt{resultados/t3\_c\_f\_*.out} y \texttt{t3\_e\_*.out}): modelo de CPU, cachés, SO, versiones, BLAS y tipo de red (importante para la parte e).}
-
 \subsection{Implementación y medición}
 \begin{itemize}
   \item \textbf{Matriz de prueba.} El bloque $(I,J)$ se genera con un generador cuya semilla depende solo de $(I,J)$, con entradas uniformes en $(-1,1)$ y diagonal igual a $N$. Cada fila tiene $N-1$ entradas fuera de la diagonal con $|a_{ij}|<1$, así que $\sum_{j\ne i}|a_{ij}|<N=a_{ii}$: la matriz es estrictamente diagonal dominante y la LU existe sin pivoteo. Como cada bloque depende solo de su posición, cada proceso genera sus propios bloques sin comunicación (no hay que armar la matriz completa en el rank 0, lo que con $N=8192$ ocuparía 512 MB adicionales), y la versión serial genera exactamente la misma matriz. La generación no se incluye en los tiempos.
@@ -216,130 +210,183 @@ Esta prueba sirve para validar la medición, no para estudiar el escalamiento: e
 
 % ======================================================================
 \section{(c) Tamaño de bloque en el \emph{cluster}}
-Configuración 2 ($2\times2$, $T=2$, un nodo, 4 procesos), $N=2^{13}=8192$.
+Configuración 2 ($2\times2$, $T=2$, un nodo, 4 procesos), $N=2^{13}=8192$, con los mismos valores de $b$ de la parte (a) más $b=N$ (\texttt{job1\_parte\_c\_f}). Todas las corridas se ejecutaron en el nodo \texttt{ventress}.
 
 \begin{figure}[H]\centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.8\linewidth, height=6.5cm,
-  ybar stacked, bar width=14pt,
+  width=0.82\linewidth, height=6.5cm,
+  ybar stacked, bar width=16pt,
   symbolic x coords={64,128,256,512,1024,2048,4096},
-  xtick=data, xlabel={Tamaño de bloque $b$}, ylabel={Tiempo rank 0 [s]},
-  title={$N=8192$, grid $2\times2$, $T=2$ (DATOS PROVISORIOS)},
+  xtick=data, xlabel={Tamaño de bloque $b$}, ylabel={Tiempo [s]},
+  title={$N=8192$, \emph{grid} $2\times2$, $T=2$, un nodo},
   legend style={at={(0.5,-0.22)}, anchor=north, legend columns=-1, font=\small},
-  ymin=0, grid=major, label style={font=\small}, tick label style={font=\small}]
-\addplot[fill=blue!50] coordinates {(64,6.5379) (128,3.2987) (256,2.6469) (512,2.4230) (1024,2.4226) (2048,2.8455) (4096,4.7042)};
-\addplot[fill=orange!70] coordinates {(64,5.1950) (128,2.3568) (256,1.4850) (512,1.0186) (1024,0.8184) (2048,1.5115) (4096,1.2054)};
+  ymin=0, ymax=11, grid=major, label style={font=\small}, tick label style={font=\small}]
+\addplot[fill=blue!50] coordinates {(64,6.392) (128,4.386) (256,3.444) (512,3.063) (1024,2.886) (2048,2.957) (4096,2.974)};
+\addplot[fill=orange!70] coordinates {(64,0.555) (128,0.549) (256,0.679) (512,0.921) (1024,1.384) (2048,2.781) (4096,5.118)};
 \legend{$\Tcomp$, $\Tcomm$}
 \end{axis}
 \end{tikzpicture}
-\caption{Tiempo de cómputo y de comunicación del rank 0 según $b$. \falta{Reemplazar con los datos corregidos.}}
+\caption{Tiempo de cómputo y de comunicación según $b$ (promedio sobre los 4 procesos, mediana de 3). La suma de ambos coincide con $\Ttot$ salvo con $b=4096$, donde el rank 0 termina mucho antes que el resto (parte f).}
 \label{fig:c}
 \end{figure}
 
 \begin{table}[H]
 \centering\small
-\caption{Barrido de $b$ con $N=8192$ en la configuración 2 ($2\times2$, $T=2$). \falta{Datos provisorios: ver nota.}}
+\caption{Barrido de $b$ con $N=8192$ en la configuración 2 ($2\times2$, $T=2$). Mediana de 3 repeticiones; $\Tcomp$ y $\Tcomm$ son el máximo sobre los procesos.}
 \label{tab:c}
 \begin{tabular}{rrrrrr}
 \toprule
 $b$ & $N/b$ & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] & GFLOP/s \\
 \midrule
-8192 & 1   & \multicolumn{4}{c}{sin memoria (\emph{OOM}, límite 4 GB)} \\
-4096 & 2   & 4.70$^\dagger$ & 1.21$^\dagger$ & 16.39$^\dagger$ & 22.4$^\dagger$ \\
-2048 & 4   & 2.85 & 1.51 & 5.98 & 61.3 \\
-1024 & 8   & 2.42 & 0.82 & 3.55 & 103.2 \\
-\textbf{512} & \textbf{16} & \textbf{2.42} & \textbf{1.02} & \textbf{3.53} & \textbf{103.8} \\
-256  & 32  & 2.65 & 1.49 & 4.16 & 88.1 \\
-128  & 64  & 3.30 & 2.36 & 5.67 & 64.6 \\
-64   & 128 & 6.54 & 5.20 & 11.75 & 31.2 \\
+8192 & 1   & 11.09 & 11.50 & 11.50 & 31.9 \\
+4096 & 2   & 5.61 & 8.09 & 10.12 & 36.2 \\
+2048 & 4   & 4.10 & 3.37 & 6.03 & 60.8 \\
+1024 & 8   & 3.27 & 1.62 & 4.30 & 85.2 \\
+\textbf{512} & \textbf{16} & \textbf{3.35} & \textbf{1.09} & \textbf{4.01} & \textbf{91.5} \\
+256  & 32  & 3.65 & 0.84 & 4.13 & 88.8 \\
+128  & 64  & 4.51 & 0.66 & 4.94 & 74.2 \\
+64   & 128 & 6.51 & 0.67 & 6.95 & 52.8 \\
 \bottomrule
 \end{tabular}\\[2pt]
-{\footnotesize $^\dagger$ Corrida en 2 nodos con $T=1$ (otra configuración) porque en 1 nodo fue terminada por memoria.}
+{\footnotesize $b=8192$ se ejecutó una sola vez. Con $b=N$ solo el rank 0 tiene la matriz; los ranks 1 y 2 esperan en el \texttt{Bcast} (por eso $\Tcomm$ máximo $\approx\Ttot$) y el rank 3 no tiene bloques.}
 \end{table}
 
-\nota{\textbf{Estos datos no son válidos todavía}: el código distribuido no aplica la actualización en los procesos que no son dueños de $A_{kk}$, así que hace mucho menos trabajo que el real y la matriz resultante es incorrecta. Con el código corregido hay que repetir todo el barrido. Lo que sigue es la estructura del análisis con la tendencia actual, a confirmar.}
-
-Con los datos provisorios, el mínimo está en $b=512$ (3.53 s), prácticamente empatado con $b=1024$ (3.55 s), que coincide con $b_a=512$ de la parte (a). \falta{confirmar con los datos nuevos.} Las razones de que el óptimo se desplace hacia bloques más grandes son:
+\textbf{El valor de (a) sigue siendo el mejor.} El mínimo está en $b=512$ (4.01 s, 91.5 GFLOP/s), igual que en la parte (a), con $b=256$ a un 3\% y $b=1024$ a un 7\%. Por lo tanto $b_c=b_a=512$. Que ambos computadores coincidan es en parte casualidad (el hardware y la BLAS son muy distintos), pero la forma de la curva se explica con los mismos dos efectos, ahora separados en cómputo y comunicación:
 \begin{itemize}
-  \item \textbf{Comunicación:} en la versión distribuida aparece un costo por mensaje (latencia $\alpha$) que no existe en la serial. El número de \texttt{Bcast} crece como $(N/b)^2$, y con $b=64$ la comunicación ya es casi igual al cómputo (5.20 frente a 6.54 s).
-  \item \textbf{Eficiencia de la actualización:} con $b$ pequeño la actualización de rango $b$ tiene baja intensidad aritmética y queda limitada por memoria, igual que en (a); además hay $N/b$ pasos, cada uno con varias llamadas desde Python.
-  \item \textbf{Hardware:} el \emph{cluster} tiene núcleos con cachés más grandes y, con $T=2$, BLAS reparte cada producto entre 2 threads, lo que favorece bloques más grandes. \falta{completar con cachés del cluster}.
-  \item \textbf{Bloques grandes:} con $b\ge2048$ hay $N/b\le4$ bloques por dimensión y solo uno o dos bloques por proceso; la mayoría de los procesos queda inactiva en cada paso (ver parte f), y con $b=N$ todo el trabajo y toda la memoria recaen en un solo proceso, que excede los 4 GB del nodo.
+  \item \textbf{$b$ pequeño: domina el cómputo.} $\Tcomp$ sube de 3.06 s ($b=512$) a 6.39 s ($b=64$), mientras que $\Tcomm$ casi no cambia ($\approx0.55$ s). Dentro de un nodo la latencia de los mensajes es baja, así que el costo de tener muchos pasos no está en la comunicación sino en la menor eficiencia de la actualización de rango $b$ y de las llamadas pequeñas a LAPACK, como en (a).
+  \item \textbf{$b$ grande: domina la espera.} El cómputo promedio casi no cambia ($\approx2.9$--3.1 s), pero $\Tcomm$ crece de 0.92 s ($b=512$) a 5.12 s ($b=4096$). Ese tiempo no es transferencia sino espera: con pocos bloques por proceso, el trabajo de cada paso queda en uno o dos procesos y el resto espera en el \texttt{Bcast} (ver parte f). El desbalance también se ve en la diferencia entre el máximo y el promedio de $\Tcomp$ (3.27 frente a 2.89 s con $b=1024$; 5.61 frente a 2.97 s con $b=4096$).
 \end{itemize}
-Por lo tanto, para las partes siguientes se usan $b_a=512$ (parte a) y $b_c=\falta{512}$ (parte c). Si ambos coinciden, se agrega $b=128$ como contraste, para poder comparar dos tamaños de bloque en las partes (d) y (e).
+Como $b_c=b_a$, en las partes (d) y (e) se usa $b=512$ y, como contraste, $b=128$.
 
 % ======================================================================
 \section{(d) Escalabilidad en un nodo: configuraciones 0 a 3}
-\textbf{Elección de $T(1)$.} Como tiempo base se usa la configuración 0 con $T=1$ ($1\times1$, un proceso, un thread), ejecutando el \emph{mismo} programa \texttt{lu\_distributed.py} con el mismo $b$. Así $T(1)$ mide exactamente el mismo algoritmo y la misma implementación en un solo CPU, sin comunicación (todos los \texttt{Bcast} son sobre comunicadores de tamaño 1), y el speedup refleja solo el efecto de agregar CPUs. Se calcula $S=T(1)/T$ y $E=S/(p\cdot T)$, donde $p\cdot T$ es el total de CPUs usados.
-\nota{Alternativa a discutir: usar el mejor de los dos $T(1)$ (con $b_a$ o con $b_c$) como base común para ambas columnas, para que el speedup sea comparable entre valores de $b$. Decidir y justificar.}
+\textbf{Elección de $T(1)$.} Como tiempo base se usa la configuración 0 con $T=1$ ($1\times1$, un proceso, un \emph{thread}), ejecutando el \emph{mismo} programa \texttt{lu\_distributed.py} con el mismo $b$: $T(1)=10.91$ s con $b=512$ y $14.81$ s con $b=128$. Así $T(1)$ mide exactamente el mismo algoritmo y la misma implementación en un solo CPU, sin comunicación real (los \texttt{Bcast} son sobre comunicadores de tamaño 1 y suman 0.1 s), y el speedup refleja solo el efecto de agregar CPUs. Se usa un $T(1)$ por cada $b$ para no mezclar el efecto de $b$ con el de la paralelización; como $T(1)$ con $b=512$ es menor, las conclusiones absolutas se leen en la columna de $b=512$. Se calcula $S=T(1)/T$ y $E=S/(p\cdot T)$, con $p\cdot T$ el total de CPUs.
 
 \begin{table}[H]
 \centering\small
-\caption{Configuraciones 0--3 en un nodo, $N=8192$. \falta{Completar con las corridas corregidas.}}
+\caption{Configuraciones 0--3 en un nodo (\texttt{ventress}), $N=8192$. Mediana de 3 repeticiones. En negrita, el menor tiempo de cada columna. La fila $2\times2$, $T=2$ proviene del barrido de la parte (c).}
 \label{tab:d}
 \begin{tabular}{cccc|rrr|rrr}
 \toprule
- & & & & \multicolumn{3}{c|}{$b=b_a=512$} & \multicolumn{3}{c}{$b=\falta{128 o $b_c$}$} \\
+ & & & & \multicolumn{3}{c|}{$b=512$} & \multicolumn{3}{c}{$b=128$} \\
 Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 \midrule
-0 & $1\times1$ & 1 & 1 & \falta{} & 1.00 & 1.00 & \falta{} & 1.00 & 1.00 \\
-0 & $1\times1$ & 2 & 2 & \falta{} & & & \falta{} & & \\
-0 & $1\times1$ & 4 & 4 & \falta{} & & & \falta{} & & \\
-0 & $1\times1$ & 8 & 8 & \falta{} & & & \falta{} & & \\
+0 & $1\times1$ & 1 & 1 & 10.91 & 1.00 & 1.00 & 14.81 & 1.00 & 1.00 \\
+0 & $1\times1$ & 2 & 2 & 6.66 & 1.64 & 0.82 & 9.79 & 1.51 & 0.76 \\
+0 & $1\times1$ & 4 & 4 & 4.19 & 2.60 & 0.65 & 6.40 & 2.31 & 0.58 \\
+0 & $1\times1$ & 8 & 8 & 4.31 & 2.53 & 0.32 & 6.80 & 2.18 & 0.27 \\
 \midrule
-1 & $1\times2$ & 1 & 2 & \falta{} & & & \falta{} & & \\
-1 & $1\times2$ & 2 & 4 & \falta{} & & & \falta{} & & \\
-1 & $1\times2$ & 4 & 8 & \falta{} & & & \falta{} & & \\
-1 & $2\times1$ & 1 & 2 & \falta{} & & & \falta{} & & \\
-1 & $2\times1$ & 2 & 4 & \falta{} & & & \falta{} & & \\
-1 & $2\times1$ & 4 & 8 & \falta{} & & & \falta{} & & \\
+1 & $1\times2$ & 1 & 2 & 6.51 & 1.67 & 0.84 & 8.29 & 1.79 & 0.89 \\
+1 & $1\times2$ & 2 & 4 & \textbf{3.86} & \textbf{2.83} & 0.71 & 5.33 & 2.78 & 0.69 \\
+1 & $1\times2$ & 4 & 8 & 3.87 & 2.82 & 0.35 & 5.44 & 2.72 & 0.34 \\
+1 & $2\times1$ & 1 & 2 & 6.60 & 1.65 & 0.83 & 8.37 & 1.77 & 0.88 \\
+1 & $2\times1$ & 2 & 4 & 4.20 & 2.60 & 0.65 & 5.47 & 2.71 & 0.68 \\
+1 & $2\times1$ & 4 & 8 & 4.27 & 2.56 & 0.32 & 5.74 & 2.58 & 0.32 \\
 \midrule
-2 & $2\times2$ & 1 & 4 & \falta{} & & & \falta{} & & \\
-2 & $2\times2$ & 2 & 8 & \falta{} & & & \falta{} & & \\
+2 & $2\times2$ & 1 & 4 & 3.88 & 2.81 & 0.70 & 4.72 & 3.13 & 0.78 \\
+2 & $2\times2$ & 2 & 8 & 4.01 & 2.72 & 0.34 & 4.94 & 3.00 & 0.37 \\
 \midrule
-3 & $2\times4$ & 1 & 8 & \falta{} & & & \falta{} & & \\
-3 & $4\times2$ & 1 & 8 & \falta{} & & & \falta{} & & \\
+3 & $2\times4$ & 1 & 8 & 4.20 & 2.60 & 0.32 & 4.96 & 2.99 & 0.37 \\
+3 & $4\times2$ & 1 & 8 & 4.20 & 2.60 & 0.32 & \textbf{4.70} & \textbf{3.15} & 0.39 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\falta{Figura: speedup frente a CPUs totales (1, 2, 4, 8), una curva por configuración y la línea ideal $S=p\cdot T$; dos paneles, uno por cada $b$.}
+\begin{figure}[H]\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.5\linewidth, height=6cm, xmode=log, log basis x=2,
+  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=8.5,
+  xlabel={CPUs totales ($p\cdot T$)}, ylabel={Speedup $S$}, grid=major,
+  label style={font=\small}, tick label style={font=\small}, title style={font=\small},
+  legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west}, title={$b=512$}]
+\addplot[dashed, gray] coordinates {(1,1) (8,8)};
+\addplot[mark=*, thick, blue!70!black] coordinates {(1,1) (2,1.64) (4,2.60) (8,2.53)};
+\addplot[mark=square*, thick, red!70!black] coordinates {(2,1.67) (4,2.83) (8,2.82)};
+\addplot[mark=triangle*, thick, orange!80!black] coordinates {(2,1.65) (4,2.60) (8,2.56)};
+\addplot[mark=diamond*, thick, green!50!black] coordinates {(4,2.81) (8,2.72)};
+\addplot[only marks, mark=pentagon*, mark size=3pt, violet] coordinates {(8,2.60)};
+\legend{Ideal, $1\times1$, $1\times2$, $2\times1$, $2\times2$, $2\times4$ / $4\times2$}
+\end{axis}
+\end{tikzpicture}%
+\begin{tikzpicture}
+\begin{axis}[width=0.5\linewidth, height=6cm, xmode=log, log basis x=2,
+  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=8.5,
+  xlabel={CPUs totales ($p\cdot T$)}, ylabel={Speedup $S$}, grid=major,
+  label style={font=\small}, tick label style={font=\small}, title style={font=\small},
+  legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west}, title={$b=128$}, ylabel={}]
+\addplot[dashed, gray] coordinates {(1,1) (8,8)};
+\addplot[mark=*, thick, blue!70!black] coordinates {(1,1) (2,1.51) (4,2.31) (8,2.18)};
+\addplot[mark=square*, thick, red!70!black] coordinates {(2,1.79) (4,2.78) (8,2.72)};
+\addplot[mark=triangle*, thick, orange!80!black] coordinates {(2,1.77) (4,2.71) (8,2.58)};
+\addplot[mark=diamond*, thick, green!50!black] coordinates {(4,3.13) (8,3.00)};
+\addplot[only marks, mark=pentagon*, mark size=3pt, violet] coordinates {(8,2.99) (8,3.15)};
+\end{axis}
+\end{tikzpicture}
+\caption{Speedup frente al total de CPUs en un nodo. En cada curva, el número de procesos está fijo y aumenta $T$; el \emph{grid} $1\times1$ usa solo \emph{threads} de BLAS.}
+\label{fig:d}
+\end{figure}
 
-\textbf{Análisis (a completar con los datos).} Preguntas a responder con la tabla:
-\begin{itemize}
-  \item \textbf{Mejor configuración con 8 CPUs:} comparar $1\times1$ con $T=8$ (todo el paralelismo en BLAS, sin comunicación), $1\times2$/$2\times1$ con $T=4$, $2\times2$ con $T=2$ y $2\times4$/$4\times2$ con $T=1$. Se espera que más procesos MPI con menos threads gane cuando $b$ es pequeño (los productos de $b\times b$ son demasiado pequeños para que BLAS aproveche varios threads), y que más threads gane cuando $b$ es grande. \falta{conclusión}.
-  \item \textbf{Forma del grid:} con $p$ fijo, el volumen de comunicación de los paneles por proceso es $\sim \tfrac{N^2}{2}\big(\tfrac{\log_2 p_r}{p_c}+\tfrac{\log_2 p_c}{p_r}\big)$ palabras (parte g), que es simétrico en $p_r$ y $p_c$. La asimetría viene de la ruta crítica: los $p_c$ procesos de la fila $r$ calculan el panel $U$ y los $p_r$ de la columna $c$ calculan el panel $L$, y el trabajo del panel por proceso es $\sim\frac{m}{p_c}+\frac{m}{p_r}$ bloques. \falta{comparar $1\times2$ vs $2\times1$ y $2\times4$ vs $4\times2$ y concluir si la forma afecta}.
-\end{itemize}
-\nota{Los datos de \texttt{results\_d.md} no sirven para esta parte: $1\times2$ y $2\times2$ se corrieron repartidos en 2 nodos (\texttt{-{}-map-by ppr:1:node} / \texttt{ppr:2:node}), $2\times4$ también en 2 nodos (eso es la configuración 4, no la 3), no se varió $T$ y no se corrió $2\times1$ ni $4\times2$ en un nodo. Además el bug de la actualización hace que los speedups salgan inflados.}
+\textbf{El escalamiento se detiene en 4 CPUs.} En todas las configuraciones el speedup crece hasta 4 CPUs y luego se estanca o baja: con $b=512$, el mejor resultado con 8 CPUs (2.82) es igual al mejor con 4 (2.83), y la eficiencia cae a 0.32--0.39. La explicación más probable es que los 8 CPUs que asigna Slurm son 4 cores físicos con sus 2 \emph{hyperthreads} (los nodos tienen 2 \emph{threads} por core, Tabla~\ref{tab:maquinas}, y Slurm normalmente asigna cores completos; no se registró qué CPUs exactos se asignaron). Hay tres observaciones consistentes con esto: (i) $1\times1$ no mejora de $T=4$ a $T=8$ (4.19 frente a 4.31 s); (ii) el cómputo máximo por proceso no baja al pasar de $2\times2$ a $2\times4$ con $T=1$ (3.28 frente a 3.26 s), aunque cada proceso tiene la mitad del trabajo; y (iii) en la parte (e), el mismo \emph{grid} $2\times4$ calcula un 30\% más rápido repartido en dos nodos. Los \emph{hyperthreads} comparten las unidades de punto flotante del core, y el producto de matrices ya las ocupa casi por completo, así que agregar el segundo \emph{thread} de cada core no aporta. Con este límite, $S\approx2.8$ con 4 cores equivale a una eficiencia de $\sim0.70$ sobre los cores reales.
+
+\textbf{Mejor configuración.} Con $b=512$ la mejor es $1\times2$ con $T=2$ (3.86 s), empatada con $1\times2$ con $T=4$ (3.87 s) y $2\times2$ con $T=1$ (3.88 s); las tres usan los 4 cores físicos con una combinación de procesos y \emph{threads}. Con $b=128$ la mejor es $4\times2$ con $T=1$ (4.70 s), seguida de $2\times2$ con $T=1$ (4.72 s). La diferencia entre ambos $b$ está en el paralelismo con \emph{threads}: con $b=128$, $1\times1$ con $T=4$ tarda 6.40 s frente a 4.72 s de $2\times2$ con $T=1$, porque los productos de rango 128 y las llamadas pequeñas a LAPACK se paralelizan mal dentro de BLAS; con $b=512$, en cambio, los \emph{threads} rinden casi igual que los procesos (4.19 frente a 3.88 s). En términos absolutos, la mejor configuración es $b=512$ con 4 cores usados como $1\times2$, $T=2$ o $2\times2$, $T=1$.
+
+\textbf{Forma del \emph{grid}.} El efecto es pequeño. Con dos procesos, $1\times2$ es igual o algo mejor que $2\times1$: 6.51 frente a 6.60 s con $T=1$ y 3.86 frente a 4.20 s con $T=2$ ($b=512$), y con $b=512$ $1\times2$ siempre tiene menos comunicación (por ejemplo, 0.71 frente a 0.90 s con $T=2$). Con ocho procesos, $2\times4$ y $4\times2$ empatan con $b=512$ (4.20 s) y $4\times2$ es un 5\% mejor con $b=128$. El modelo de la parte (g) predice un volumen de comunicación simétrico en $p_r$ y $p_c$, y las diferencias medidas son del orden de la variación entre configuraciones; la asimetría de $1\times2$ frente a $2\times1$ se puede deber a la implementación, ya que el panel $L$ se procesa con transpuestas sobre un arreglo guardado por filas. En resumen, la forma del \emph{grid} afecta poco comparada con el número de cores físicos y con $b$.
 
 % ======================================================================
 \section{(e) Uno frente a dos nodos: configuraciones 3, 4 y 5}
-Con $N=8192$ se compara el \emph{grid} $2\times4$ en un nodo con 8 procesos (configuración 3) y en dos nodos con 4 procesos cada uno (configuración 4). Ambas usan exactamente los mismos procesos, los mismos bloques y los mismos mensajes; solo cambia el medio por donde viajan los mensajes que cruzan de un nodo a otro. La configuración 5 ($4\times4$, dos nodos, 16 CPUs) muestra qué pasa al duplicar los procesos.
+Con $N=8192$ y $T=1$ se compara el \emph{grid} $2\times4$ en un nodo con 8 procesos (configuración 3, \texttt{job2}) y en dos nodos con 4 procesos cada uno (configuración 4, \texttt{job4}), y además $4\times4$ en dos nodos con 8 procesos cada uno (configuración 5). En las configuraciones 4 y 5 se confirmó el mapeo con el nombre del nodo de cada proceso: los ranks 0--3 (fila 0 del \emph{grid} $2\times4$) quedan en \texttt{ventress} y los ranks 4--7 (fila 1) en \texttt{yodaxico}; en $4\times4$, las filas 0--1 en \texttt{ventress} y las filas 2--3 en \texttt{yodaxico}. Por lo tanto, los \texttt{Bcast} en \texttt{row\_comm} (paneles $L$) son internos a un nodo y los de \texttt{col\_comm} (bloque diagonal hacia la columna y paneles $U$) cruzan la red.
 
 \begin{table}[H]
 \centering\small
-\caption{Configuraciones 3, 4 y 5 con $N=8192$, $T=1$. Tiempos máximos sobre los procesos. \falta{Completar.}}
+\caption{Configuraciones 3, 4 y 5 con $N=8192$, $T=1$. Mediana de 3; $\Tcomp$ y $\Tcomm$: máximo y promedio sobre los procesos.}
 \label{tab:e}
-\begin{tabular}{ccccc|rrr|rrr}
+\begin{tabular}{ccc|rrrrr|rrrrr}
 \toprule
- & & & & & \multicolumn{3}{c|}{$b=128$} & \multicolumn{3}{c}{$b=512$} \\
-Conf. & Grid & Nodos & Proc./nodo & CPUs & $\Tcomp$ & $\Tcomm$ & $\Ttot$ & $\Tcomp$ & $\Tcomm$ & $\Ttot$ \\
+ & & & \multicolumn{5}{c|}{$b=512$} & \multicolumn{5}{c}{$b=128$} \\
+ & & & \multicolumn{2}{c}{$\Tcomp$} & \multicolumn{2}{c}{$\Tcomm$} & & \multicolumn{2}{c}{$\Tcomp$} & \multicolumn{2}{c}{$\Tcomm$} & \\
+Conf. & Grid & Nodos & máx & prom & máx & prom & $\Ttot$ & máx & prom & máx & prom & $\Ttot$ \\
 \midrule
-3 & $2\times4$ & 1 & 8 & 8  & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
-4 & $2\times4$ & 2 & 4 & 8  & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
-5 & $4\times4$ & 2 & 8 & 16 & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
+3 & $2\times4$ & 1 & 3.26 & 2.83 & 1.75 & 1.35 & \textbf{4.20} & 4.31 & 4.14 & 0.98 & 0.81 & 4.96 \\
+4 & $2\times4$ & 2 & 2.28 & 1.74 & 3.16 & 2.73 & 4.52 & 2.57 & 2.34 & 3.11 & 2.89 & 5.22 \\
+5 & $4\times4$ & 2 & 2.24 & 1.65 & 3.59 & 3.22 & 4.95 & 2.48 & 2.19 & 3.02 & 2.75 & \textbf{4.95} \\
 \bottomrule
-\end{tabular}
+\end{tabular}\\[2pt]
+{\footnotesize Tiempos en segundos. Una de las tres corridas de la configuración 5 con $b=512$ tardó 8.82 s (la comunicación subió a 7.4 s); la mediana la descarta.}
 \end{table}
 
-\falta{Figura: barras apiladas $\Tcomp$/$\Tcomm$ para las configuraciones 3, 4 y 5, un grupo por cada $b$.}
+\begin{figure}[H]\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\linewidth, height=6cm,
+  ybar stacked, bar width=18pt,
+  symbolic x coords={C3-512,C4-512,C5-512,C3-128,C4-128,C5-128},
+  xtick=data, xticklabels={{Conf. 3\\1 nodo},{Conf. 4\\2 nodos},{Conf. 5\\2 nodos},{Conf. 3\\1 nodo},{Conf. 4\\2 nodos},{Conf. 5\\2 nodos}},
+  xticklabel style={align=center, font=\scriptsize},
+  ylabel={Tiempo promedio por proceso [s]}, ymin=0, ymax=6,
+  title={Cómputo y comunicación: $b=512$ (izquierda) y $b=128$ (derecha)},
+  legend style={at={(0.5,-0.25)}, anchor=north, legend columns=-1, font=\small},
+  grid=major, label style={font=\small}, tick label style={font=\small},
+  ]
+\addplot[fill=blue!50] coordinates {(C3-512,2.834) (C4-512,1.744) (C5-512,1.653) (C3-128,4.144) (C4-128,2.338) (C5-128,2.193)};
+\addplot[fill=orange!70] coordinates {(C3-512,1.350) (C4-512,2.733) (C5-512,3.220) (C3-128,0.809) (C4-128,2.885) (C5-128,2.752)};
+\legend{$\Tcomp$, $\Tcomm$}
+\end{axis}
+\end{tikzpicture}
+\caption{Tiempo de cómputo y de comunicación promedio por proceso en las configuraciones 3 (1 nodo), 4 y 5 (2 nodos).}
+\label{fig:e}
+\end{figure}
 
-\textbf{Análisis.} El cómputo debería ser casi igual en las configuraciones 3 y 4, porque cada proceso tiene los mismos bloques y hace las mismas operaciones; la diferencia debe aparecer en $\Tcomm$. Dentro de un nodo, Open MPI usa memoria compartida: la latencia es del orden de $\sim$1 $\mu$s y el ancho de banda está limitado por la copia en memoria (decenas de GB/s). Entre nodos, cada mensaje pasa por la red, con una latencia $\alpha$ de \falta{decenas de $\mu$s en Ethernet / $\sim$1--2 $\mu$s en InfiniBand} y un ancho de banda $1/\beta$ de \falta{x GB/s}. Con el \emph{grid} $2\times4$ repartido en 2 nodos de 4 procesos (ranks 0--3 en un nodo, ranks 4--7 en otro), cada fila del \emph{grid} queda dentro de un nodo, pero cada columna cruza la red: los \texttt{Bcast} de $U_{kj}$ en \texttt{col\_comm} son inter-nodo y los de $L_{ik}$ en \texttt{row\_comm} son intra-nodo. \falta{verificar el mapeo de ranks a nodos con \texttt{-{}-report-bindings} o imprimiendo \texttt{MPI.Get\_processor\_name()}}.
+\textbf{Comunicación.} Al repartir el mismo \emph{grid} $2\times4$ en dos nodos, el tiempo de comunicación promedio se duplica con $b=512$ (1.35 a 2.73 s) y se multiplica por 3.6 con $b=128$ (0.81 a 2.89 s). Dentro de un nodo, Open MPI copia los mensajes por memoria compartida, con una latencia de microsegundos y un ancho de banda limitado por la copia en memoria. Entre nodos, cada mensaje de \texttt{col\_comm} pasa por la red Ethernet de los nodos (interfaz \texttt{enp13s0f0}; no se encontró InfiniBand), con una latencia $\alpha$ y un ancho de banda $1/\beta$ mucho peores. Se puede estimar el orden de magnitud de ambos:
+\begin{itemize}
+  \item \textbf{Ancho de banda.} En cada paso, la fila dueña del bloque diagonal envía su panel $U$ a la otra fila. Sumando sobre los pasos y las 4 columnas, cruzan la red $\sim4N^2$ bytes de paneles $U$ más $8Nb$ bytes de bloques diagonales, $\approx0.3$ GB en total, casi igual para ambos $b$. Con $b=512$ (solo 16 pasos), el aumento de $\Tcomm$ máximo es 1.41 s (de 1.75 a 3.16 s), lo que corresponde a un ancho de banda efectivo de $\sim0.2$ GB/s. Mover el mismo volumen en memoria compartida tomaría del orden de decenas de milisegundos.
+  \item \textbf{Costo por paso.} Con $b=128$ el volumen es el mismo, pero hay 64 pasos en vez de 16, y el aumento de $\Tcomm$ máximo es 2.13 s en vez de 1.41 s. Los 0.72 s adicionales repartidos en 48 pasos más dan un costo fijo de $\sim15$ ms por paso. Es mucho más que la latencia típica de Ethernet (decenas de $\mu$s): el costo por paso no es solo la latencia del cable, sino la sincronización de cada paso, donde todos los procesos esperan a que el \texttt{Bcast} entre nodos termine antes de actualizar.
+\end{itemize}
+Es decir, con $b=512$ la penalización entre nodos se explica principalmente por el \textbf{ancho de banda}, y con $b=128$ se suma el costo \textbf{por mensaje}, que crece con el número de pasos $N/b$.
 
-La dependencia con $b$ separa los dos efectos. Con un \texttt{Bcast} por panel, hay $\sim2N/b$ difusiones en la ruta crítica, mientras que el volumen total de los paneles ($\sim\tfrac{N^2}{2}(\tfrac{\log_2p_r}{p_c}+\tfrac{\log_2p_c}{p_r})$ palabras) casi no depende de $b$ (parte g). Con $b=128$ hay 128 pasos con mensajes más pequeños, donde pesa más la \textbf{latencia}; con $b=512$ hay solo 32 pasos con mensajes 4 veces más grandes, donde pesa más el \textbf{ancho de banda}. \falta{Cuantificar: estimar $\alpha$ y $\beta$ inter-nodo a partir de la diferencia $\Tcomm^{(4)}-\Tcomm^{(3)}$ para ambos $b$.} En la configuración 5, $\Tcomp$ debería caer a la mitad, pero $\Tcomm$ crece: cada \texttt{Bcast} por columna tiene más pasos ($\log_2 4=2$ en vez de $\log_2 2=1$) y, con las filas 0--1 en un nodo y 2--3 en el otro, todos los \texttt{col\_comm} cruzan la red, ahora entre 4 procesos.
+\textbf{Cómputo.} Contra lo esperado, el cómputo no es igual en ambas configuraciones: en dos nodos baja de 2.83 a 1.74 s promedio ($b=512$). Esto confirma la observación de la parte (d): en un nodo, los 8 procesos comparten 4 cores físicos (2 por core), mientras que en dos nodos cada nodo tiene 4 cores para 4 procesos. La configuración 4 tiene el doble de cores reales que la 3.
 
-\nota{Dato provisorio con el código con bug: la configuración 4 ($2\times4$, dos nodos, $b=512$) dio $\Ttot = 2.97$, $3.60$ y $3.48$ s en tres corridas, y la 5 dio $\Ttot=3.44$ s con $\Tcomm=2.56$ s (74\% del total). Nunca se corrió la configuración 3, que es la comparación central de esta pregunta. La comparación de formas $1\times8$/$2\times4$/$4\times2$/$8\times1$ de \texttt{results\_e.md} no la pide el enunciado; se puede dejar en un anexo como experimento adicional.}
+\textbf{Balance.} Con $b=512$ la configuración 3 es la más rápida (4.20 s): el cómputo que se gana al usar el doble de cores (-1.1 s) no alcanza a compensar la comunicación adicional por la red (+1.4 s). Con $b=128$ la configuración 3 tiene el cómputo más lento (4.14 s, por la baja eficiencia de los bloques pequeños sobre cores compartidos), y las tres quedan cerca (4.95 a 5.22 s). La configuración 5 duplica los procesos, pero no los cores físicos respecto de la 4 (8 procesos en los 4 cores de cada nodo), así que el cómputo casi no baja (2.24 frente a 2.28 s máximo) y la comunicación sube, porque cada \texttt{col\_comm} tiene ahora 4 procesos ($\log_2 4=2$ etapas) y todos cruzan la red. Con $b=512$ es la más lenta (4.95 s), y con $b=128$ empata con la configuración 3.
 
 % ======================================================================
 \section{(f) Bloques grandes frente a bloques pequeños en el \emph{grid} $2\times2$}
@@ -347,33 +394,53 @@ Se compara $b=N/2=4096$ con $b=N/16=512$ en el \emph{grid} $2\times2$, con $N=81
 
 \begin{table}[H]
 \centering\small
-\caption{Tiempos de cada proceso en el \emph{grid} $2\times2$, $N=8192$. \falta{Completar.}}
+\caption{Tiempos de cada proceso en el \emph{grid} $2\times2$, $N=8192$, $T=2$ (mediana de 3). $\Ttot$ es el momento en que termina cada proceso. La última columna de cada bloque es el trabajo asignado.}
 \label{tab:f}
-\begin{tabular}{cc|rrr|rrr}
+\begin{tabular}{cc|rrrr|rrr}
 \toprule
- & & \multicolumn{3}{c|}{$b=N/2=4096$} & \multicolumn{3}{c}{$b=N/16=512$} \\
-Rank & Posición & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] \\
+ & & \multicolumn{4}{c|}{$b=N/2=4096$} & \multicolumn{3}{c}{$b=N/16=512$} \\
+Rank & Posición & $\Tcomp$ & $\Tcomm$ & $\Ttot$ & GFLOP & $\Tcomp$ & $\Tcomm$ & $\Ttot$ \\
 \midrule
-0 & $(0,0)$ & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
-1 & $(0,1)$ & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
-2 & $(1,0)$ & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
-3 & $(1,1)$ & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} & \falta{} \\
+0 & $(0,0)$ & 1.95 & 0.11 & 2.06 & 45.8 & 2.88 & 1.09 & 3.98 \\
+1 & $(0,1)$ & 2.35 & 7.78 & 10.12 & 68.7 & 3.05 & 0.95 & 4.01 \\
+2 & $(1,0)$ & 2.00 & 8.09 & 10.08 & 68.7 & 2.99 & 1.00 & 4.01 \\
+3 & $(1,1)$ & 5.61 & 4.51 & 10.12 & 183.3 & 3.35 & 0.65 & 4.01 \\
 \bottomrule
-\end{tabular}
+\end{tabular}\\[2pt]
+{\footnotesize Tiempos en segundos. Con $b=4096$, el $\Ttot$ de la corrida es 10.12 s; con $b=512$, 4.01 s.}
 \end{table}
 
-\falta{Figura: barras apiladas $\Tcomp$/$\Tcomm$ por rank, dos paneles ($b=4096$ y $b=512$).}
+\begin{figure}[H]\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\linewidth, height=6cm,
+  ybar stacked, bar width=16pt,
+  symbolic x coords={a0,a1,a2,a3,s,b0,b1,b2,b3},
+  xtick={a0,a1,a2,a3,b0,b1,b2,b3},
+  xticklabels={{r0},{r1},{r2},{r3},{r0},{r1},{r2},{r3}},
+  ylabel={Tiempo [s]}, ymin=0, ymax=11.5,
+  title={Por proceso: $b=4096$ (izquierda) y $b=512$ (derecha)},
+  legend style={at={(0.5,-0.18)}, anchor=north, legend columns=-1, font=\small},
+  grid=major, label style={font=\small}, tick label style={font=\small}]
+\addplot[fill=blue!50] coordinates {(a0,1.947) (a1,2.347) (a2,2.001) (a3,5.613) (b0,2.877) (b1,3.047) (b2,2.993) (b3,3.349)};
+\addplot[fill=orange!70] coordinates {(a0,0.106) (a1,7.776) (a2,8.086) (a3,4.513) (b0,1.092) (b1,0.951) (b2,0.998) (b3,0.654)};
+\legend{$\Tcomp$, $\Tcomm$}
+\end{axis}
+\end{tikzpicture}
+\caption{Tiempo de cómputo y de comunicación de cada proceso en el \emph{grid} $2\times2$ con $b=N/2$ y $b=N/16$.}
+\label{fig:f}
+\end{figure}
 
-\textbf{Qué se espera y por qué.} Con $b=N/2$ la matriz tiene $2\times2$ bloques y cada proceso guarda \emph{exactamente uno}. El algoritmo queda completamente secuencial:
+\textbf{$b=N/2$: el algoritmo queda secuencial.} La matriz tiene $2\times2$ bloques y cada proceso guarda exactamente uno, así que el trabajo se ejecuta en cadena:
 \begin{enumerate}
-  \item Paso $k=0$: $(0,0)$ factoriza $A_{00}$ ($\tfrac{2}{3}b^3$ FLOP) mientras los demás esperan; luego $(0,1)$ calcula $U_{01}$ y $(1,0)$ calcula $L_{10}$ ($b^3$ cada uno, en paralelo); finalmente solo $(1,1)$ actualiza $A_{11}\leftarrow A_{11}-L_{10}U_{01}$ ($2b^3$).
+  \item Paso $k=0$: $(0,0)$ factoriza $A_{00}$ ($\tfrac{2}{3}b^3=45.8$ GFLOP) mientras los demás esperan. Luego $(0,1)$ calcula $U_{01}$ y $(1,0)$ calcula $L_{10}$ ($b^3=68.7$ GFLOP cada uno, en paralelo). Finalmente solo $(1,1)$ actualiza $A_{11}\leftarrow A_{11}-L_{10}U_{01}$ ($2b^3$).
   \item Paso $k=1$: solo $(1,1)$ factoriza $A_{11}$ ($\tfrac{2}{3}b^3$).
 \end{enumerate}
-La ruta crítica suma $\tfrac{2}{3}+1+2+\tfrac{2}{3}=\tfrac{13}{3}b^3$ FLOP, frente a $\tfrac{16}{3}b^3$ del total: el máximo speedup posible es $16/13\approx1.23$ con 4 procesos. Además, cada mensaje es un bloque de $4096^2\times8$ B $=128$ MB, y en el paso 0 se difunden tres bloques así ($A_{00}$, $U_{01}$ y $L_{10}$). Se espera entonces que $(1,1)$ tenga la mayor parte de $\Tcomp$, y que los demás procesos acumulen tiempo de espera, que aparece en $\Tcomm$ (esperando a la raíz en el \texttt{Bcast}) o como diferencia entre $\Ttot$ y $\Tcomp+\Tcomm$ (esperando en el \texttt{Barrier} final).
+Las mediciones calzan exactamente con esta cadena. El rank 0 termina a los 2.06 s, después de factorizar su bloque, y no participa más. El rank 3 hace el 50\% de todos los FLOP (5.61 s de cómputo), y sus 4.51 s de comunicación son la espera por el rank 0 (1.95 s) y por los paneles (2.35 s). Los ranks 1 y 2 terminan sus paneles a los $\sim4.3$ s y luego esperan $\sim8$ s en el \texttt{Bcast} del paso $k=1$, hasta que el rank 3 termina. La ruta crítica suma $1.95+2.35+5.61=9.91$ s de cómputo, es decir, el 98\% de los 10.12 s totales: la transferencia de los tres bloques de $4096^2\times8$ B $=128$ MB en memoria compartida toma solo $\sim0.2$ s. El speedup máximo posible con este $b$ es $\tfrac{16/3}{13/3}=1.23$ respecto de un solo proceso, y lo medido es 1.14 respecto de $b=N$ (11.50 s).
 
-Con $b=N/16$ hay $16\times16$ bloques, $8\times8$ por proceso, y la distribución cíclica reparte la submatriz restante de forma pareja en casi todos los pasos: el trabajo se balancea y los mensajes son de 2 MB. \falta{Contrastar con la tabla: desbalance de $\Tcomp$ entre ranks, peso de $\Tcomm$.}
+\textbf{$b=N/16$: trabajo balanceado.} Con $16\times16$ bloques ($8\times8$ por proceso), la distribución cíclica reparte la submatriz restante de forma pareja en casi todos los pasos. El cómputo de los 4 procesos queda entre 2.88 y 3.35 s ($\pm8\%$) y la comunicación entre 0.65 y 1.09 s, que de nuevo es principalmente espera: el rank 3, que tiene los índices de bloque más altos y por lo tanto más trabajo, es el que menos espera. El resultado es 2.5 veces más rápido (4.01 frente a 10.12 s).
 
-\nota{Dato provisorio (con bug, solo rank 0): con $b=4096$ en 2 nodos y $T=1$, $\Tcomp=4.70$, $\Tcomm=1.21$ y $\Ttot=16.39$ s; con $b=512$ en 1 nodo y $T=2$, $3.53$ s. El hueco $\Ttot-\Tcomp-\Tcomm\approx10$ s en $b=4096$ es justamente el rank 0 esperando en el \texttt{Barrier} final a los otros procesos, que coincide con la explicación de arriba. Pero ambas corridas usan configuraciones distintas y no son comparables: hay que repetir ambas en la misma configuración. La tabla de \texttt{results\_f.md} ($2\times4$ con $b\in\{2048,512,128\}$) no responde esta pregunta.}
+En resumen, $b$ grande reduce el número de mensajes, pero destruye el paralelismo: casi todo el $\Tcomm$ con $b=N/2$ es tiempo ocioso, no transferencia. Esto corresponde a los términos de ruta crítica del modelo de la parte (g).
 
 % ======================================================================
 \section{(g) Modelo de costo}
@@ -405,18 +472,54 @@ T(N,b,p_r,p_c) \;\approx\;&
 \end{align*}
 con $p=p_rp_c$.
 
-\textbf{Qué explica el $b$ óptimo.} El término principal $\tfrac{2N^3}{3p}\gamma$ no depende de $b$, y el volumen de datos de los paneles ($\beta N^2/2\cdots$) tampoco. Los términos que \emph{crecen} con $b$ son los de la ruta crítica secuencial: los paneles ($\propto N^2b$), que en cada paso calcula solo una fila y una columna del \emph{grid}, y los bloques diagonales ($\propto Nb^2$), que calcula un solo proceso mientras los demás esperan. Ambos representan también el desbalance: cuando $m<p_r$ o $m<p_c$ hay procesos sin trabajo, y con $b=N/2$ el algoritmo es casi secuencial (parte f). El término que \emph{decrece} con $b$ es la latencia, proporcional al número de pasos $N/b$. En Python hay que sumarle el costo fijo $\delta$ de las $\sim5$ llamadas a NumPy/SciPy/mpi4py de cada paso, que tiene la misma forma: $\tfrac{N}{b}(2\alpha\log_2 p+5\delta)$. Igualando las derivadas del término de paneles y de este término:
+\textbf{Qué explica el $b$ óptimo.} El término principal $\tfrac{2N^3}{3p}\gamma$ no depende de $b$, y el volumen de datos de los paneles ($\tfrac{N^2}{2}(\cdots)\beta$) tampoco. Los términos que \emph{crecen} con $b$ son los de la ruta crítica secuencial: los paneles ($\propto N^2b$), que en cada paso calcula solo una fila y una columna del \emph{grid}, y los bloques diagonales ($\propto Nb^2$), que calcula un solo proceso mientras los demás esperan. Ambos representan también el desbalance: cuando $m<p_r$ o $m<p_c$ hay procesos sin trabajo, y con $b=N/2$ el algoritmo es secuencial (parte f). El término que \emph{decrece} con $b$ es el costo por paso, proporcional al número de pasos $N/b$: la latencia $2\alpha\log_2 p$ de los \texttt{Bcast}, más un costo fijo por paso (llamadas desde Python, sincronización). Lo escribimos como $\tfrac{N}{b}\tau$. Igualando la derivada del término de paneles con la de este término:
 \[
-b_{\text{opt}}\approx\sqrt{\frac{2\,(2\alpha\log_2 p+5\delta)}{N\gamma\,(1/p_r+1/p_c)}}.
+b_{\text{opt}}\approx\sqrt{\frac{2\tau}{N\gamma\,(1/p_r+1/p_c)}}.
 \]
-Con valores típicos ($\alpha,\delta\sim10^{-5}$ s, $\gamma\sim(25\ \text{GFLOP/s})^{-1}$), esta expresión da $b_{\text{opt}}$ de unas pocas decenas, mucho menor que lo medido. La diferencia la explica un efecto que el modelo con $\gamma$ constante no captura: \textbf{$\gamma$ depende de $b$}. La actualización es una multiplicación de rango $b$, $(m b\times b)\cdot(b\times mb)$, cuya intensidad aritmética es $\sim b/8$ FLOP por byte (cada elemento de la submatriz, 16 bytes leídos y escritos, recibe $2b$ FLOP): con $b$ pequeño BLAS queda limitado por el ancho de banda de memoria y $\gamma$ efectivo sube mucho. Lo mismo ocurre con \texttt{lu\_factor} y \texttt{solve\_triangular} sobre bloques pequeños. Por eso el óptimo real queda donde la multiplicación ya alcanza su rendimiento máximo ($b$ de algunos cientos) y antes de que los términos de ruta crítica y desbalance crezcan.
-\falta{Con las mediciones: estimar $\gamma(b)$ de la configuración 0 con $T=1$ ($\gamma\approx\Ttot/(\tfrac{2}{3}N^3)$), $\alpha$ y $\beta$ inter-nodo de la parte (e), evaluar el modelo y compararlo con el $b_{\text{opt}}$ medido en (c).}
 
-\textbf{Cuello de botella.} \falta{Responder con los datos corregidos.} Con los datos provisorios, $\Tcomm$ es del mismo orden que $\Tcomp$ desde 4 procesos y lo supera en dos nodos (por ejemplo, 74\% del tiempo en $4\times4$), lo que apunta a la comunicación (y la espera que incluye) como cuello de botella al escalar. Como el bug reduce artificialmente $\Tcomp$, esta conclusión puede cambiar.
+\textbf{Evaluación con las mediciones.} De la configuración 0 con $T=1$ se obtiene $\gamma\approx\Tcomp/(\tfrac{2}{3}N^3)=2.95\times10^{-11}$ s/FLOP con $b=512$ (33.9 GFLOP/s) y $4.0\times10^{-11}$ con $b=128$ (25.0 GFLOP/s): $\gamma$ depende de $b$, como se anticipó en (a). La Tabla~\ref{tab:g} compara el modelo (solo los términos en $\gamma$, con $\gamma$ de $b=512$) con el barrido de la parte (c). Se usa $\gamma$ de un \emph{thread} porque, como se vio en (d), los 4 procesos con $T=2$ comparten 4 cores físicos; para $b=4096$ se usa la ruta crítica de la parte (f), $\tfrac{13}{3}b^3\gamma$, porque la aproximación $\sum m^2\approx n_b^3/3$ no vale con $n_b=2$.
+
+\begin{table}[H]
+\centering\small
+\caption{Modelo de costo ($\gamma$ constante) frente a lo medido en la configuración 2 ($2\times2$, $N=8192$).}
+\label{tab:g}
+\begin{tabular}{rrrrr}
+\toprule
+$b$ & Modelo [s] & Medido [s] & Diferencia [s] & Diferencia por paso [ms] \\
+\midrule
+64   & 2.76 & 6.95 & 4.18 & 33 \\
+128  & 2.83 & 4.94 & 2.11 & 33 \\
+256  & 2.96 & 4.12 & 1.16 & 36 \\
+512  & 3.25 & 4.01 & 0.76 & 47 \\
+1024 & 3.88 & 4.30 & 0.42 & 53 \\
+2048 & 5.40 & 6.03 & 0.63 & 158 \\
+4096 & 8.78 & 10.12 & 1.34 & 670 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Para $b\ge1024$, el modelo sigue bien el crecimiento del tiempo (la diferencia es de 0.4 a 1.3 s, un 10--13\%): ese aumento lo explican los términos de ruta crítica y desbalance. Para $b\le512$, la diferencia entre lo medido y el modelo es casi exactamente proporcional al número de pasos: $\sim33$--47 ms por paso. Ese es el costo $\tau$ por paso, que incluye la menor eficiencia de las operaciones con bloques pequeños ($\gamma$ efectivo mayor), la cadena de factorizar el bloque diagonal, calcular los paneles y difundirlos, que en cada paso no se solapa con la actualización, y las llamadas desde Python. Con $\tau\approx35$ ms, $\gamma=2.95\times10^{-11}$ y $p_r=p_c=2$, el modelo da
+\[
+b_{\text{opt}}\approx\sqrt{\frac{2\cdot0.035}{8192\cdot2.95\times10^{-11}\cdot1}}\approx540,
+\]
+muy cerca del $b=512$ medido (con $\tau$ entre 33 y 47 ms el resultado queda entre 520 y 620). Es decir, el $b$ óptimo lo determina el equilibrio entre el costo fijo por paso (que favorece pocos pasos, $b$ grande) y la ruta crítica de paneles y bloques diagonales (que favorece $b$ pequeño). La latencia de la red, en cambio, no es la que fija el óptimo dentro de un nodo: con $b=64$ la comunicación es solo 0.67 s. Cabe aclarar que $\tau$ se ajustó con las mismas mediciones, así que el modelo explica el óptimo, pero no lo predice de forma independiente.
+
+\textbf{Cuello de botella.} Depende de dónde corren los procesos:
+\begin{itemize}
+  \item \textbf{En un nodo, el cuello de botella es el cómputo.} $\Tcomp$ es el 78--91\% del tiempo (por ejemplo, 3.26 de 4.20 s en $2\times4$, $b=512$), y el escalamiento se detiene en 4 CPUs porque se acaban los cores físicos (parte d). La comunicación que aparece es principalmente espera por desbalance, que con $b$ grande se vuelve dominante (parte f).
+  \item \textbf{Entre nodos, el cuello de botella es la comunicación.} En las configuraciones 4 y 5, $\Tcomm$ supera a $\Tcomp$ (3.16 frente a 2.28 s y 3.59 frente a 2.24 s máximos con $b=512$), con un ancho de banda efectivo entre nodos de $\sim0.2$ GB/s y un costo de $\sim15$ ms por paso (parte e). Por eso agregar un segundo nodo no mejora el tiempo, aunque duplique los cores físicos.
+\end{itemize}
 
 % ======================================================================
 \section{Conclusiones}
-\nota{Escribir con los datos corregidos. Ideas: (1) el $b$ óptimo es un compromiso entre eficiencia de BLAS / overhead de Python (favorece $b$ grande) y latencia + ruta crítica + balance de carga (favorece $b$ pequeño), y se desplaza hacia arriba al pasar a MPI; (2) qué combinación procesos $\times$ threads gana con 8 CPUs; (3) si la forma del grid importa; (4) cuánto cuesta cruzar la red entre nodos; (5) $b=N/2$ elimina el paralelismo; (6) cuello de botella final.}
+\begin{enumerate}
+  \item \textbf{La implementación es correcta.} La versión distribuida entrega exactamente el mismo resultado que la serial en los \emph{grids} $1\times1$, $1\times2$, $2\times1$ y $2\times2$, con un residuo $\|A-LU\|/\|A\|=4.2\times10^{-16}$ y sin pivoteo. Aprovechar que los bloques locales son contiguos permite un solo \texttt{solve\_triangular}, un solo \texttt{Bcast} por panel y una sola multiplicación por paso.
+  \item \textbf{El $b$ óptimo es 512, tanto en el computador personal como en el \emph{cluster}.} Es un compromiso entre el costo fijo por paso y la eficiencia de BLAS, que favorecen $b$ grande, y la ruta crítica y el balance de carga, que favorecen $b$ pequeño. El modelo de costo con un costo por paso de $\sim35$ ms reproduce el óptimo ($b\approx540$).
+  \item \textbf{En un nodo, el speedup llega a $\sim2.8$ y se detiene en 4 CPUs.} Los 8 CPUs asignados corresponden a 4 cores físicos con \emph{hyperthreading}, que no aportan en un código dominado por productos de matrices. La mejor configuración usa los 4 cores con 2 procesos y 2 \emph{threads} ($1\times2$, 3.86 s) o con 4 procesos ($2\times2$, 3.88 s). Con $b$ pequeño conviene más usar procesos MPI que \emph{threads} de BLAS.
+  \item \textbf{La forma del \emph{grid} afecta poco} (menos de un 10\%), mucho menos que $b$ o el número de cores reales.
+  \item \textbf{Cruzar la red cuesta más de lo que se gana.} Repartir el \emph{grid} $2\times4$ en dos nodos duplica los cores reales y reduce el cómputo en un 30--45\%, pero la comunicación por Ethernet ($\sim0.2$ GB/s efectivos) más que compensa la ganancia; $4\times4$ en dos nodos tampoco mejora.
+  \item \textbf{$b=N/2$ elimina el paralelismo}: la factorización queda como una cadena de operaciones en distintos procesos, el 98\% del tiempo es la ruta crítica de cómputo y es 2.5 veces más lenta que $b=N/16$.
+\end{enumerate}
 
 % ======================================================================
 \section*{Declaración de uso de IA}
@@ -424,7 +527,7 @@ Se utilizó el agente Claude Code (Anthropic) como herramienta de asistencia té
 
 \appendix
 \section{Scripts SLURM}
-Los scripts se entregan en el \texttt{.zip}. Todos incluyen \texttt{-{}-qos}, \texttt{-{}-partition} y \texttt{-{}-account} de la partición del curso, fijan las variables de \emph{threads} en \texttt{\$SLURM\_CPUS\_PER\_TASK} y usan \texttt{-{}-ntasks-per-node} para controlar la ubicación de los procesos.
+Los scripts se entregan en el \texttt{.zip}. Todos incluyen \texttt{-{}-qos}, \texttt{-{}-partition} y \texttt{-{}-account} de la partición del curso, fijan los \emph{threads} de BLAS en $T$ en cada corrida y usan \texttt{-{}-ntasks-per-node} para controlar la ubicación de los procesos.
 \begin{table}[H]
 \centering\small
 \caption{Scripts SLURM (carpeta \texttt{slurm/}). Todos usan $N=8192$ y 3 repeticiones; \texttt{comun.sh} define la función que lanza cada corrida.}
@@ -433,9 +536,9 @@ Los scripts se entregan en el \texttt{.zip}. Todos incluyen \texttt{-{}-qos}, \t
 \textbf{Script} & \textbf{Partes} & \textbf{Corridas} \\
 \midrule
 \texttt{job1\_parte\_c\_f} & c, f & 1 nodo, 4 tareas $\times$ 2 CPUs: \emph{grid} $2\times2$, $T=2$, $b=4096,\dots,64$ (y $b=N$). \\
-\texttt{job2\_parte\_d\_T1} & d, e & 1 nodo, 8 tareas $\times$ 1 CPU: $1\times1$, $1\times2$, $2\times1$, $2\times2$, $2\times4$ y $4\times2$ con $T=1$, para $b_a$ y $b_c$. \\
-\texttt{job3\_parte\_d\_Tvar} & d & 1 nodo, 2 tareas $\times$ 4 CPUs: $1\times1$ con $T=2,4,8$; $1\times2$ y $2\times1$ con $T=2,4$, para $b_a$ y $b_c$. Cada corrida usa $p\cdot T\le8$ CPUs. \\
-\texttt{job4\_parte\_e} & e & 2 nodos, 8 tareas $\times$ 1 CPU por nodo: $2\times4$ con 4 procesos por nodo y $4\times4$ con 8 por nodo, $T=1$, para $b_a$ y $b_c$. \\
+\texttt{job2\_parte\_d\_T1} & d, e & 1 nodo, 8 tareas $\times$ 1 CPU: $1\times1$, $1\times2$, $2\times1$, $2\times2$, $2\times4$ y $4\times2$ con $T=1$, para $b=512$ y $b=128$. \\
+\texttt{job3\_parte\_d\_Tvar} & d & 1 nodo, 2 tareas $\times$ 4 CPUs: $1\times1$ con $T=2,4,8$; $1\times2$ y $2\times1$ con $T=2,4$, para $b=512$ y $b=128$. Cada corrida usa $p\cdot T\le8$ CPUs. \\
+\texttt{job4\_parte\_e} & e & 2 nodos, 8 tareas $\times$ 1 CPU por nodo: $2\times4$ con 4 procesos por nodo y $4\times4$ con 8 por nodo, $T=1$, para $b=512$ y $b=128$. \\
 \bottomrule
 \end{tabular}
 \end{table}
