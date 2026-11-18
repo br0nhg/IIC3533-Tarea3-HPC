@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --comment="Experimentos factorizacion LU distribuida Tarea 3 IIC3533"
 # Partes (c) y (f): grid 2x2 (configuracion 2), T=2, un nodo, barrido de b.
 # El barrido incluye b=N/2=4096 y b=N/16=512, que son los dos casos de la parte (f)
 # (los tiempos de cada proceso salen en las lineas PROC).

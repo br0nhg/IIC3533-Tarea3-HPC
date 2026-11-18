@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --comment="Experimentos factorizacion LU distribuida Tarea 3 IIC3533"
 # Parte (d), T=1, un nodo: configuraciones 0 (1x1), 1 (1x2, 2x1), 2 (2x2) y 3 (2x4, 4x2).
 # Uso: sbatch slurm/job2_parte_d_T1.slurm <b_c>    (b_c = mejor b de la parte c; por defecto 512)
 #SBATCH --job-name=t3_d_T1

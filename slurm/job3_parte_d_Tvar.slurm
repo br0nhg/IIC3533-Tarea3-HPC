@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --comment="Experimentos factorizacion LU distribuida Tarea 3 IIC3533"
 # Parte (d), T=2, 4 y 8, un nodo: configuraciones 0 (1x1) y 1 (1x2, 2x1).
 # La asignacion es de 8 CPUs (2 tareas x 4 CPUs) y cada corrida usa exactamente
 # p*T <= 8 CPUs, por lo que no hay oversubscription.

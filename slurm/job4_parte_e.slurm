@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --comment="Experimentos factorizacion LU distribuida Tarea 3 IIC3533"
 # Parte (e), dos nodos, T=1: configuracion 4 (2x4, 4 procesos por nodo)
 # y configuracion 5 (4x4, 8 procesos por nodo). La configuracion 3 sale del job2.
 # Uso: sbatch slurm/job4_parte_e.slurm <b_c>    (por defecto 512)
