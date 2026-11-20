@@ -4,9 +4,10 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[margin=2.2cm]{geometry}
-\usepackage{graphicx,booktabs,multirow,float,amsmath,amssymb,listings,xcolor,hyperref}
+\usepackage{graphicx,booktabs,multirow,float,amsmath,amssymb,listings,xcolor}
 \usepackage{caption}
 \usepackage{pgfplots}
+\usepackage[hidelinks]{hyperref}
 \pgfplotsset{compat=1.17, /pgf/number format/use period}
 \captionsetup{font=small,labelfont=bf}
 \setlength{\emergencystretch}{2em}
@@ -38,7 +39,7 @@ Como la matriz es diagonal dominante, la factorización se completa sin pivoteo,
 \subsection{Plataformas}
 \begin{table}[H]
 \centering\small
-\caption{Características del computador personal (parte a y b) y del \emph{cluster} Kraken (partes c--f).}
+\caption{Características del computador personal (parte a y b) y del \emph{cluster} Kraken (partes c--f). Los datos del \emph{cluster} se obtuvieron en \texttt{ventress}; se asume que \texttt{yodaxico} es igual.}
 \label{tab:maquinas}
 \begin{tabular}{lp{5.2cm}p{6.2cm}}
 \toprule
@@ -47,12 +48,12 @@ Como la matriz es diagonal dominante, la factorización se completa sin pivoteo,
 CPU & Apple M5 (ARM64) & Intel Xeon E5-2640 v4, 2.4 GHz (máx.\ 3.4 GHz) \\
 Cores & 10: 4 de rendimiento (P) + 6 de eficiencia (E), sin SMT & 2 sockets $\times$ 10 cores $\times$ 2 \emph{threads} (HT) = 40 CPUs por nodo; 2 nodos (\texttt{ventress}, \texttt{yodaxico}) \\
 Cachés & L1d 128 KB (P) / 64 KB (E); L2 16 MB (clúster P) + 6 MB (clúster E) & L1d 32 KB/core; L2 256 KB/core; L3 25 MB/socket \\
-Memoria & 16 GB unificada & $\sim$192 GB por nodo \\
+Memoria & 16 GB unificada & 251 GB por nodo (192 GB configurados en Slurm) \\
 Límites del grupo & -- & 8 CPUs y 4 GB por nodo, 15 min por \emph{job} \\
 Red entre nodos & -- & Ethernet (\texttt{enp13s0f0}), sin InfiniBand \\
 Sistema operativo & macOS 26.6 & Linux \\
 Python / MPI & Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 & Miniconda: Python 3.12, NumPy 2.5, SciPy 1.18, mpi4py 4.1, Open MPI 5.0 \\
-BLAS & Apple Accelerate & BLAS/LAPACK de conda-forge (\texttt{libblas} 3.9.0) \\
+BLAS & Apple Accelerate & BLAS/LAPACK de conda-forge (paquete genérico \texttt{libblas} 3.9.0; no se verificó qué implementación usa) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -61,7 +62,7 @@ BLAS & Apple Accelerate & BLAS/LAPACK de conda-forge (\texttt{libblas} 3.9.0) \\
   \item \textbf{Matriz de prueba.} El bloque $(I,J)$ se genera con un generador cuya semilla depende solo de $(I,J)$, con entradas uniformes en $(-1,1)$ y diagonal igual a $N$. Cada fila tiene $N-1$ entradas fuera de la diagonal con $|a_{ij}|<1$, así que $\sum_{j\ne i}|a_{ij}|<N=a_{ii}$: la matriz es estrictamente diagonal dominante y la LU existe sin pivoteo. Como cada bloque depende solo de su posición, cada proceso genera sus propios bloques sin comunicación (no hay que armar la matriz completa en el rank 0, lo que con $N=8192$ ocuparía 512 MB adicionales), y la versión serial genera exactamente la misma matriz. La generación no se incluye en los tiempos.
   \item Los tiempos se miden con \texttt{MPI.Wtime()} después de un \texttt{Barrier}. $\Tcomp$ acumula \texttt{lu\_factor}, \texttt{solve\_triangular} y la actualización; $\Tcomm$ acumula los \texttt{Bcast} y el empaquetado de los paneles en buffers contiguos; $\Ttot$ va hasta el \texttt{Barrier} final. Como \texttt{Bcast} bloquea hasta que llega el mensaje, $\Tcomm$ incluye también el tiempo que un proceso \emph{espera} a la raíz (desbalance de carga), no solo la transferencia. Cada proceso registra sus propios tiempos y el rank 0 los reúne con \texttt{gather}; para cada corrida se reporta el máximo sobre los procesos.
   \item Se reporta el rendimiento como GFLOP/s $=\tfrac{2}{3}N^3/\Ttot$.
-  \item En el \emph{cluster}, \texttt{OMP\_NUM\_THREADS}, \texttt{OPENBLAS\_NUM\_THREADS} y \texttt{MKL\_NUM\_THREADS} se fijan en $T$ en cada corrida y se propagan a todos los procesos (\texttt{mpirun -x}). El número de procesos por nodo se controla con \texttt{-{}-ntasks-per-node} y \texttt{-{}-map-by ppr:$k$:node}, y en cada corrida se usan exactamente $p\cdot T\le8$ CPUs por nodo, sin sobresuscripción. Se usa \texttt{-{}-bind-to none} para que los $T$ threads de un proceso no queden fijos en un solo core.
+  \item En el \emph{cluster}, \texttt{OMP\_NUM\_THREADS}, \texttt{OPENBLAS\_NUM\_THREADS} y \texttt{MKL\_NUM\_THREADS} se fijan en $T$ en cada corrida y se propagan a todos los procesos (\texttt{mpirun -x}). A diferencia de la tabla del enunciado, que define \texttt{-{}-ntasks} y \texttt{-{}-cpus-per-task} para cada configuración, cada \emph{job} reserva 8 CPUs por nodo y ejecuta dentro varias configuraciones, lanzando $p$ procesos con \texttt{mpirun -n $p$} y fijando los \emph{threads} de BLAS en $T$. Así, con el límite de 4 \emph{jobs} en cola y 1 en ejecución, todas las corridas cupieron en 4 \emph{jobs}. Cada corrida usa exactamente $p\cdot T\le8$ de las CPUs reservadas en cada nodo, sin sobresuscripción, por lo que los recursos son los mismos que con un \emph{job} por configuración. Las configuraciones 0 a 3 corren en un solo nodo; en las configuraciones 4 y 5, el número de procesos por nodo se fija con \texttt{-{}-map-by ppr:$k$:node}. Se usa \texttt{-{}-bind-to none} para que los $T$ threads de un proceso no queden fijos en un solo core.
   \item Cada configuración se ejecuta 3 veces dentro del mismo \emph{job} y se reporta la \textbf{mediana}, como en la Tarea 2.
 \end{itemize}
 
@@ -244,7 +245,7 @@ $b$ & $N/b$ & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] & GFLOP/s \\
 2048 & 4   & 4.10 & 3.37 & 6.03 & 60.8 \\
 1024 & 8   & 3.27 & 1.62 & 4.30 & 85.2 \\
 \textbf{512} & \textbf{16} & \textbf{3.35} & \textbf{1.09} & \textbf{4.01} & \textbf{91.5} \\
-256  & 32  & 3.65 & 0.84 & 4.13 & 88.8 \\
+256  & 32  & 3.65 & 0.84 & 4.12 & 88.8 \\
 128  & 64  & 4.51 & 0.66 & 4.94 & 74.2 \\
 64   & 128 & 6.51 & 0.67 & 6.95 & 52.8 \\
 \bottomrule
@@ -254,8 +255,8 @@ $b$ & $N/b$ & $\Tcomp$ [s] & $\Tcomm$ [s] & $\Ttot$ [s] & GFLOP/s \\
 
 \textbf{El valor de (a) sigue siendo el mejor.} El mínimo está en $b=512$ (4.01 s, 91.5 GFLOP/s), igual que en la parte (a), con $b=256$ a un 3\% y $b=1024$ a un 7\%. Por lo tanto $b_c=b_a=512$. Que ambos computadores coincidan es en parte casualidad (el hardware y la BLAS son muy distintos), pero la forma de la curva se explica con los mismos dos efectos, ahora separados en cómputo y comunicación:
 \begin{itemize}
-  \item \textbf{$b$ pequeño: domina el cómputo.} $\Tcomp$ sube de 3.06 s ($b=512$) a 6.39 s ($b=64$), mientras que $\Tcomm$ casi no cambia ($\approx0.55$ s). Dentro de un nodo la latencia de los mensajes es baja, así que el costo de tener muchos pasos no está en la comunicación sino en la menor eficiencia de la actualización de rango $b$ y de las llamadas pequeñas a LAPACK, como en (a).
-  \item \textbf{$b$ grande: domina la espera.} El cómputo promedio casi no cambia ($\approx2.9$--3.1 s), pero $\Tcomm$ crece de 0.92 s ($b=512$) a 5.12 s ($b=4096$). Ese tiempo no es transferencia sino espera: con pocos bloques por proceso, el trabajo de cada paso queda en uno o dos procesos y el resto espera en el \texttt{Bcast} (ver parte f). El desbalance también se ve en la diferencia entre el máximo y el promedio de $\Tcomp$ (3.27 frente a 2.89 s con $b=1024$; 5.61 frente a 2.97 s con $b=4096$).
+  \item \textbf{$b$ pequeño: domina el cómputo.} $\Tcomp$ promedio (Figura~\ref{fig:c}) sube de 3.06 s ($b=512$) a 6.39 s ($b=64$), mientras que $\Tcomm$ promedio casi no cambia ($\approx0.55$ s). Dentro de un nodo la latencia de los mensajes es baja, así que el costo de tener muchos pasos no está en la comunicación sino en la menor eficiencia de la actualización de rango $b$ y de las llamadas pequeñas a LAPACK, como en (a).
+  \item \textbf{$b$ grande: domina la espera.} El cómputo promedio casi no cambia ($\approx2.9$--3.1 s), pero $\Tcomm$ promedio crece de 0.92 s ($b=512$) a 5.12 s ($b=4096$). Ese tiempo no es transferencia sino espera: con pocos bloques por proceso, el trabajo de cada paso queda en uno o dos procesos y el resto espera en el \texttt{Bcast} (ver parte f). El desbalance también se ve en la diferencia entre el máximo y el promedio de $\Tcomp$ (3.27 frente a 2.89 s con $b=1024$; 5.61 frente a 2.97 s con $b=4096$).
 \end{itemize}
 Como $b_c=b_a$, en las partes (d) y (e) se usa $b=512$ y, como contraste, $b=128$.
 
@@ -275,7 +276,7 @@ Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 0 & $1\times1$ & 1 & 1 & 10.91 & 1.00 & 1.00 & 14.81 & 1.00 & 1.00 \\
 0 & $1\times1$ & 2 & 2 & 6.66 & 1.64 & 0.82 & 9.79 & 1.51 & 0.76 \\
 0 & $1\times1$ & 4 & 4 & 4.19 & 2.60 & 0.65 & 6.40 & 2.31 & 0.58 \\
-0 & $1\times1$ & 8 & 8 & 4.31 & 2.53 & 0.32 & 6.80 & 2.18 & 0.27 \\
+0 & $1\times1$ & 8 & 8 & 4.31 & 2.53 & 0.32 & 6.81 & 2.18 & 0.27 \\
 \midrule
 1 & $1\times2$ & 1 & 2 & 6.51 & 1.67 & 0.84 & 8.29 & 1.79 & 0.89 \\
 1 & $1\times2$ & 2 & 4 & \textbf{3.86} & \textbf{2.83} & 0.71 & 5.33 & 2.78 & 0.69 \\
@@ -287,7 +288,7 @@ Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 2 & $2\times2$ & 1 & 4 & 3.88 & 2.81 & 0.70 & 4.72 & 3.13 & 0.78 \\
 2 & $2\times2$ & 2 & 8 & 4.01 & 2.72 & 0.34 & 4.94 & 3.00 & 0.37 \\
 \midrule
-3 & $2\times4$ & 1 & 8 & 4.20 & 2.60 & 0.32 & 4.96 & 2.99 & 0.37 \\
+3 & $2\times4$ & 1 & 8 & 4.20 & 2.60 & 0.32 & 4.95 & 2.99 & 0.37 \\
 3 & $4\times2$ & 1 & 8 & 4.20 & 2.60 & 0.32 & \textbf{4.70} & \textbf{3.15} & 0.39 \\
 \bottomrule
 \end{tabular}
@@ -296,10 +297,10 @@ Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 \begin{figure}[H]\centering
 \begin{tikzpicture}
 \begin{axis}[width=0.5\linewidth, height=6cm, xmode=log, log basis x=2,
-  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=8.5,
+  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=4,
   xlabel={CPUs totales ($p\cdot T$)}, ylabel={Speedup $S$}, grid=major,
   label style={font=\small}, tick label style={font=\small}, title style={font=\small},
-  legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west}, title={$b=512$}]
+  legend style={font=\footnotesize, at={(0.98,0.02)}, anchor=south east}, title={$b=512$}]
 \addplot[dashed, gray] coordinates {(1,1) (8,8)};
 \addplot[mark=*, thick, blue!70!black] coordinates {(1,1) (2,1.64) (4,2.60) (8,2.53)};
 \addplot[mark=square*, thick, red!70!black] coordinates {(2,1.67) (4,2.83) (8,2.82)};
@@ -311,10 +312,10 @@ Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 \end{tikzpicture}%
 \begin{tikzpicture}
 \begin{axis}[width=0.5\linewidth, height=6cm, xmode=log, log basis x=2,
-  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=8.5,
+  xtick={1,2,4,8}, xticklabels={1,2,4,8}, xmin=0.85, xmax=9.4, ymin=0, ymax=4,
   xlabel={CPUs totales ($p\cdot T$)}, ylabel={Speedup $S$}, grid=major,
   label style={font=\small}, tick label style={font=\small}, title style={font=\small},
-  legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west}, title={$b=128$}, ylabel={}]
+  title={$b=128$}, ylabel={}]
 \addplot[dashed, gray] coordinates {(1,1) (8,8)};
 \addplot[mark=*, thick, blue!70!black] coordinates {(1,1) (2,1.51) (4,2.31) (8,2.18)};
 \addplot[mark=square*, thick, red!70!black] coordinates {(2,1.79) (4,2.78) (8,2.72)};
@@ -323,7 +324,7 @@ Conf. & Grid & $T$ & CPUs & $\Ttot$ [s] & $S$ & $E$ & $\Ttot$ [s] & $S$ & $E$ \\
 \addplot[only marks, mark=pentagon*, mark size=3pt, violet] coordinates {(8,2.99) (8,3.15)};
 \end{axis}
 \end{tikzpicture}
-\caption{Speedup frente al total de CPUs en un nodo. En cada curva, el número de procesos está fijo y aumenta $T$; el \emph{grid} $1\times1$ usa solo \emph{threads} de BLAS.}
+\caption{Speedup frente al total de CPUs en un nodo. En cada curva, el número de procesos está fijo y aumenta $T$; el \emph{grid} $1\times1$ usa solo \emph{threads} de BLAS. La leyenda del panel izquierdo aplica a ambos paneles; la línea ideal ($S=p\cdot T$) se corta en $S=4$ para que se distingan las curvas.}
 \label{fig:d}
 \end{figure}
 
@@ -347,8 +348,8 @@ Con $N=8192$ y $T=1$ se compara el \emph{grid} $2\times4$ en un nodo con 8 proce
  & & & \multicolumn{2}{c}{$\Tcomp$} & \multicolumn{2}{c}{$\Tcomm$} & & \multicolumn{2}{c}{$\Tcomp$} & \multicolumn{2}{c}{$\Tcomm$} & \\
 Conf. & Grid & Nodos & máx & prom & máx & prom & $\Ttot$ & máx & prom & máx & prom & $\Ttot$ \\
 \midrule
-3 & $2\times4$ & 1 & 3.26 & 2.83 & 1.75 & 1.35 & \textbf{4.20} & 4.31 & 4.14 & 0.98 & 0.81 & 4.96 \\
-4 & $2\times4$ & 2 & 2.28 & 1.74 & 3.16 & 2.73 & 4.52 & 2.57 & 2.34 & 3.11 & 2.89 & 5.22 \\
+3 & $2\times4$ & 1 & 3.26 & 2.83 & 1.75 & 1.35 & \textbf{4.20} & 4.31 & 4.14 & 0.98 & 0.81 & \textbf{4.95} \\
+4 & $2\times4$ & 2 & 2.28 & 1.74 & 3.16 & 2.73 & 4.51 & 2.57 & 2.34 & 3.11 & 2.88 & 5.22 \\
 5 & $4\times4$ & 2 & 2.24 & 1.65 & 3.59 & 3.22 & 4.95 & 2.48 & 2.19 & 3.02 & 2.75 & \textbf{4.95} \\
 \bottomrule
 \end{tabular}\\[2pt]
@@ -377,7 +378,7 @@ Conf. & Grid & Nodos & máx & prom & máx & prom & $\Ttot$ & máx & prom & máx 
 \label{fig:e}
 \end{figure}
 
-\textbf{Comunicación.} Al repartir el mismo \emph{grid} $2\times4$ en dos nodos, el tiempo de comunicación promedio se duplica con $b=512$ (1.35 a 2.73 s) y se multiplica por 3.6 con $b=128$ (0.81 a 2.89 s). Dentro de un nodo, Open MPI copia los mensajes por memoria compartida, con una latencia de microsegundos y un ancho de banda limitado por la copia en memoria. Entre nodos, cada mensaje de \texttt{col\_comm} pasa por la red Ethernet de los nodos (interfaz \texttt{enp13s0f0}; no se encontró InfiniBand), con una latencia $\alpha$ y un ancho de banda $1/\beta$ mucho peores. Se puede estimar el orden de magnitud de ambos:
+\textbf{Comunicación.} Al repartir el mismo \emph{grid} $2\times4$ en dos nodos, el tiempo de comunicación promedio se duplica con $b=512$ (1.35 a 2.73 s) y se multiplica por 3.6 con $b=128$ (0.81 a 2.88 s). Dentro de un nodo, Open MPI copia los mensajes por memoria compartida, con una latencia de microsegundos y un ancho de banda limitado por la copia en memoria. Entre nodos, cada mensaje de \texttt{col\_comm} pasa por la red Ethernet de los nodos (interfaz \texttt{enp13s0f0}; no se encontró InfiniBand), con una latencia $\alpha$ y un ancho de banda $1/\beta$ mucho peores. Se puede estimar el orden de magnitud de ambos:
 \begin{itemize}
   \item \textbf{Ancho de banda.} En cada paso, la fila dueña del bloque diagonal envía su panel $U$ a la otra fila. Sumando sobre los pasos y las 4 columnas, cruzan la red $\sim4N^2$ bytes de paneles $U$ más $8Nb$ bytes de bloques diagonales, $\approx0.3$ GB en total, casi igual para ambos $b$. Con $b=512$ (solo 16 pasos), el aumento de $\Tcomm$ máximo es 1.41 s (de 1.75 a 3.16 s), lo que corresponde a un ancho de banda efectivo de $\sim0.2$ GB/s. Mover el mismo volumen en memoria compartida tomaría del orden de decenas de milisegundos.
   \item \textbf{Costo por paso.} Con $b=128$ el volumen es el mismo, pero hay 64 pasos en vez de 16, y el aumento de $\Tcomm$ máximo es 2.13 s en vez de 1.41 s. Los 0.72 s adicionales repartidos en 48 pasos más dan un costo fijo de $\sim15$ ms por paso. Es mucho más que la latencia típica de Ethernet (decenas de $\mu$s): el costo por paso no es solo la latencia del cable, sino la sincronización de cada paso, donde todos los procesos esperan a que el \texttt{Bcast} entre nodos termine antes de actualizar.
@@ -394,7 +395,7 @@ Se compara $b=N/2=4096$ con $b=N/16=512$ en el \emph{grid} $2\times2$, con $N=81
 
 \begin{table}[H]
 \centering\small
-\caption{Tiempos de cada proceso en el \emph{grid} $2\times2$, $N=8192$, $T=2$ (mediana de 3). $\Ttot$ es el momento en que termina cada proceso. La última columna de cada bloque es el trabajo asignado.}
+\caption{Tiempos de cada proceso en el \emph{grid} $2\times2$, $N=8192$, $T=2$ (mediana de 3). $\Ttot$ es el momento en que termina cada proceso. La columna GFLOP es el trabajo asignado a cada proceso con $b=N/2$.}
 \label{tab:f}
 \begin{tabular}{cc|rrrr|rrr}
 \toprule
@@ -418,9 +419,9 @@ Rank & Posición & $\Tcomp$ & $\Tcomm$ & $\Ttot$ & GFLOP & $\Tcomp$ & $\Tcomm$ &
   symbolic x coords={a0,a1,a2,a3,s,b0,b1,b2,b3},
   xtick={a0,a1,a2,a3,b0,b1,b2,b3},
   xticklabels={{r0},{r1},{r2},{r3},{r0},{r1},{r2},{r3}},
-  ylabel={Tiempo [s]}, ymin=0, ymax=11.5,
-  title={Por proceso: $b=4096$ (izquierda) y $b=512$ (derecha)},
-  legend style={at={(0.5,-0.18)}, anchor=north, legend columns=-1, font=\small},
+  xlabel={Proceso (rank)}, ylabel={Tiempo [s]}, ymin=0, ymax=11.5,
+  title={Izquierda: $b=N/2=4096$ \quad Derecha: $b=N/16=512$},
+  legend style={at={(0.5,-0.26)}, anchor=north, legend columns=-1, font=\small},
   grid=major, label style={font=\small}, tick label style={font=\small}]
 \addplot[fill=blue!50] coordinates {(a0,1.947) (a1,2.347) (a2,2.001) (a3,5.613) (b0,2.877) (b1,3.047) (b2,2.993) (b3,3.349)};
 \addplot[fill=orange!70] coordinates {(a0,0.106) (a1,7.776) (a2,8.086) (a3,4.513) (b0,1.092) (b1,0.951) (b2,0.998) (b3,0.654)};
@@ -436,7 +437,7 @@ Rank & Posición & $\Tcomp$ & $\Tcomm$ & $\Ttot$ & GFLOP & $\Tcomp$ & $\Tcomm$ &
   \item Paso $k=0$: $(0,0)$ factoriza $A_{00}$ ($\tfrac{2}{3}b^3=45.8$ GFLOP) mientras los demás esperan. Luego $(0,1)$ calcula $U_{01}$ y $(1,0)$ calcula $L_{10}$ ($b^3=68.7$ GFLOP cada uno, en paralelo). Finalmente solo $(1,1)$ actualiza $A_{11}\leftarrow A_{11}-L_{10}U_{01}$ ($2b^3$).
   \item Paso $k=1$: solo $(1,1)$ factoriza $A_{11}$ ($\tfrac{2}{3}b^3$).
 \end{enumerate}
-Las mediciones calzan exactamente con esta cadena. El rank 0 termina a los 2.06 s, después de factorizar su bloque, y no participa más. El rank 3 hace el 50\% de todos los FLOP (5.61 s de cómputo), y sus 4.51 s de comunicación son la espera por el rank 0 (1.95 s) y por los paneles (2.35 s). Los ranks 1 y 2 terminan sus paneles a los $\sim4.3$ s y luego esperan $\sim8$ s en el \texttt{Bcast} del paso $k=1$, hasta que el rank 3 termina. La ruta crítica suma $1.95+2.35+5.61=9.91$ s de cómputo, es decir, el 98\% de los 10.12 s totales: la transferencia de los tres bloques de $4096^2\times8$ B $=128$ MB en memoria compartida toma solo $\sim0.2$ s. El speedup máximo posible con este $b$ es $\tfrac{16/3}{13/3}=1.23$ respecto de un solo proceso, y lo medido es 1.14 respecto de $b=N$ (11.50 s).
+Las mediciones calzan exactamente con esta cadena. El rank 0 termina a los 2.06 s, después de factorizar su bloque, y no participa más. El rank 3 hace el 50\% de todos los FLOP (5.61 s de cómputo), y sus 4.51 s de comunicación son la espera por el rank 0 (1.95 s) y por los paneles (2.35 s). Los ranks 1 y 2 esperan $\sim2$ s al inicio a que el rank 0 factorice $A_{00}$, terminan sus paneles a los $\sim4.3$ s y luego esperan $\sim5.8$ s en el \texttt{Bcast} del paso $k=1$, hasta que el rank 3 termina; ambas esperas suman sus $\sim8$ s de $\Tcomm$. La ruta crítica suma $1.95+2.35+5.61=9.91$ s de cómputo, es decir, el 98\% de los 10.12 s totales: la transferencia de los tres bloques de $4096^2\times8$ B $=128$ MB en memoria compartida toma solo $\sim0.2$ s. El speedup máximo posible con este $b$ es $\tfrac{16/3}{13/3}=1.23$ respecto de un solo proceso, y lo medido es 1.14 respecto de $b=N$ (11.50 s).
 
 \textbf{$b=N/16$: trabajo balanceado.} Con $16\times16$ bloques ($8\times8$ por proceso), la distribución cíclica reparte la submatriz restante de forma pareja en casi todos los pasos. El cómputo de los 4 procesos queda entre 2.88 y 3.35 s ($\pm8\%$) y la comunicación entre 0.65 y 1.09 s, que de nuevo es principalmente espera: el rank 3, que tiene los índices de bloque más altos y por lo tanto más trabajo, es el que menos espera. El resultado es 2.5 veces más rápido (4.01 frente a 10.12 s).
 
